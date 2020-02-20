@@ -36,6 +36,7 @@ export default {
     }
   },
   created() {
+    console.log('mixinsz');
     this.user.name=this.obj_D.name;
     this.user.age=this.obj_D.age;
     this.user.address=this.obj_D.address;

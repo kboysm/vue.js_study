@@ -1,4 +1,12 @@
 export const firstM = {
+    created() {
+     console.log('mixins');   
+    },
+    data(){
+        return{
+            mixinDate:'믹스인 다시보니.. 새롭다'
+        }
+    },
     methods: {
         getDateAndTime(date){
             if(date !==null){

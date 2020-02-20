@@ -3,6 +3,7 @@
     <div  class="parents">
     <h1>부모 컴포넌트</h1>
     <p>mixins test -> {{getDateAndTime(new Date())}}</p>
+    <p>{{compumix}}</p>
     <p>부모 컴포넌트 name : {{name}}</p>
     <p> 부모 obj_D 객체 : {{obj_D}}</p>
     <br>
@@ -49,7 +50,16 @@ export default {
       //자식 컴포넌트에서 넘긴 user객체를 부모컴포넌트에 적용
     }
   },
-  mixins:[firstM]
+  computed: {
+    compumix(){
+      return this.mixinDate+' 많이 써먹어야지~';
+    }
+  },
+  created() {
+    console.log('유저 컴포넌트');
+  },
+  mixins:[firstM] //믹스인 안에있는 함수나 데이터 등등은 모두 this를 통해서 불러올 수 있다.
+  //만약 이름이 겹치는 동일한 데이터가 있다면 믹스인보다 현재 컴포넌트의 데이터가 출력, 믹스인이 먼저 실행되므로 덮어 씌워진다.
 };
 </script>
 
