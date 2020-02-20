@@ -6,22 +6,21 @@
         test해본 결과 props로 객체를 넘기는 것도 가능하다 <br>
        이름: <input type="text" v-model="user.name">
        <button @click="changeD()">수정</button>
+       <p> eventBus : {{eventUser}}</p>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import {eventBus} from '../main'
 
 export default {
     props:['childName','obj_D'],
   name: 'Home',
-  components: {
-    HelloWorld
-  },
   data(){
     return {
-      user:{}
+      user:{},
+      eventUser:{}
     }
   },
   methods: {
@@ -39,6 +38,11 @@ export default {
     this.user.name=this.obj_D.name;
     this.user.age=this.obj_D.age;
     this.user.address=this.obj_D.address;
+  },
+  mounted() {
+    eventBus.$on("EventBus", data =>{
+      this.eventUser = data;
+    });
   },
 }
 </script>
