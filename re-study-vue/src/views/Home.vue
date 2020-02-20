@@ -2,6 +2,7 @@
   <div>
     <h2>자식 컴포넌트 Home.vue</h2>
         <h2>{{childName}}</h2>
+        <p>mixins test -> {{getDateAndTime(new Date())}}</p>
         <p>{{obj_D}}</p>
         test해본 결과 props로 객체를 넘기는 것도 가능하다 <br>
        이름: <input type="text" v-model="user.name">
@@ -13,7 +14,7 @@
 <script>
 // @ is an alias to /src
 import {eventBus} from '../main'
-
+import {firstM} from '../mixins/first_mixin';
 export default {
     props:['childName','obj_D'],
   name: 'Home',
@@ -43,7 +44,7 @@ export default {
     eventBus.$on("EventBus", data =>{
       this.eventUser = data;
     });
-  },
+  },  mixins:[firstM]
 }
 </script>
 <style scoped>
