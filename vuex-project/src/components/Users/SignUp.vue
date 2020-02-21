@@ -28,7 +28,7 @@
 
 <script>
 import { EventBus } from '@/main.js'
-
+import {mapMutations} from 'vuex'
   export default {
     data() {
       return {
@@ -48,7 +48,9 @@ import { EventBus } from '@/main.js'
           address: this.address,
           src: this.src
         }
-        EventBus.$emit('signUp', userObj)
+        //뮤테이션에서 땡겨옴
+        this.addUsers(userObj);
+        //this.$store.commit('addUsers',userObj) 이 방법으로도 뮤테이션을 실행 가능!
         this.clearForm()
       },
       clearForm() {
@@ -57,7 +59,8 @@ import { EventBus } from '@/main.js'
         this.name = null,
         this.address = null,
         this.src = null
-      }
+      },
+      ...mapMutations(['addUsers'])
     }
   }
 </script>

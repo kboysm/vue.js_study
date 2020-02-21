@@ -12,7 +12,10 @@ export default new Vuex.Store({
     ]
   },
   mutations: {
-
+    //뮤테이션은 state값을 변화시키는 용도, 각각의 컴포넌트에서 state를 똑같이 변화시키면 코드의 중복이 발생 -> mutation등장!
+    addUsers:(state,payload)=>{
+      state.allUsers.push(payload);
+    },
   },
   actions: {
 
