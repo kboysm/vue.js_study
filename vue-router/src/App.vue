@@ -8,6 +8,18 @@
     <!-- @click="$router.push({path:'/'})"
          @click="$router.push('/')" 
          @click="$router.push({name:'home'})"
+
+         router :to="{name:'users', 
+        params:{
+          userId:4321,
+          name:'LSM'
+        },
+        query:{
+          group:'member',
+          category:'trial'
+        }
+        }"
+        params , query 보내는 법
      -->
       <v-list dense>
         <v-list-tile
@@ -31,16 +43,7 @@
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile
-        router :to="{name:'users', 
-        params:{
-          userId:4321,
-          name:'LSM'
-        },
-        query:{
-          group:'member',
-          category:'trial'
-        }
-        }" exact
+        router :to="{name:'users'}" exact
         >
           <v-list-tile-action>
             <i class="fas fa-user"></i>
