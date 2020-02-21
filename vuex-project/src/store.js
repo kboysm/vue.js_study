@@ -18,7 +18,14 @@ export default new Vuex.Store({
     },
   },
   actions: {
-
+    //뮤테이션은 모든기능이 동기로 동작한다. 여러 컴포넌트에서 요청이 들어오면 요청의 순서를 보장받기가 힘들다 !! 그래서 !! actions를 쓴다!!
+    // addUsers:(context)=>{
+    //   context.commit('addUsers')
+    // }
+    addUsers:({commit},payload)=>{
+      commit('addUsers',payload)
+    }
+    
   },
   getters:{
     allUsersCount(state){

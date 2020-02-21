@@ -28,7 +28,7 @@
 
 <script>
 import { EventBus } from '@/main.js'
-import {mapMutations} from 'vuex'
+import {mapActions,mapMutations} from 'vuex'
   export default {
     data() {
       return {
@@ -49,8 +49,11 @@ import {mapMutations} from 'vuex'
           src: this.src
         }
         //뮤테이션에서 땡겨옴
-        this.addUsers(userObj);
+        //this.addUsers(userObj);
         //this.$store.commit('addUsers',userObj) 이 방법으로도 뮤테이션을 실행 가능!
+        //Actions
+        //this.$store.dispatch('addUsers',userObj);
+        this.addUsers(userObj);
         this.clearForm()
       },
       clearForm() {
@@ -60,7 +63,8 @@ import {mapMutations} from 'vuex'
         this.address = null,
         this.src = null
       },
-      ...mapMutations(['addUsers'])
+      //...mapMutations(['addUsers']),
+      ...mapActions(['addUsers'])
     }
   }
 </script>
