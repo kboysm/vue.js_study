@@ -2,11 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import vuetify from './plugins/vuetify'
-import "font-awesome/css/font-awesome.min.css"
-Vue.component('VueFontawesome', require('vue-fontawesome-icon/VueFontawesome.vue').default);
-Vue.config.productionTip = false
-
+import vuetify from './plugins/vuetify';
 export const eventBus = new Vue({
   methods:{
     listEdit(memo,index){
@@ -15,6 +11,7 @@ export const eventBus = new Vue({
   }
 })
 
+Vue.config.productionTip = false
 new Vue({
   router,
   store,
