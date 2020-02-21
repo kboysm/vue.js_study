@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>All Users({{ allUsersCount }})</h1>
-    <h1>Seoul Users({{ countOfSeoul }})({{ percentOfSeoul }}%)</h1>
+    <h1>All Users({{ count }})</h1>
+    <h1>Seoul Users({{ seouls }})({{ percent }}%)</h1>
     <v-list two-line>
       <v-list-tile 
-        v-for="(user, index) in $store.state.allUsers"
+        v-for="(user, index) in all"
         :key="index"
         avatar
       >
@@ -24,7 +24,7 @@
 
 <script>
 import { EventBus } from '@/main.js'
-import {mapGetters} from 'vuex'
+import {mapState,mapGetters} from 'vuex'
   export default {
     data() {
       return {
@@ -32,7 +32,18 @@ import {mapGetters} from 'vuex'
       }
     },
     computed:{
-      ...mapGetters(['allUsersCount','countOfSeoul','percentOfSeoul'])
+      ...mapGetters({
+        //이 컴포넌트에서는 (name : store의 getters메서드명)에서 name으로 쓰겠다는 의미이다. 
+        count:'allUsersCount',
+        seouls:'countOfSeoul',
+        percent:'percentOfSeoul'
+      }),
+      //...mapState(['allUsers'])도 가능 대신 v-for문에서 all -> allUsers로 바꿔주어야함
+      ...mapState({
+        //여기서도 getters와 같음
+        all:'allUsers'
+      })
+      //...mapGetters(['allUsersCount','countOfSeoul','percentOfSeoul'])
     }
     ,
     mounted() {
