@@ -13,12 +13,26 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item router :to="{name:'login'}" exact>
+        <v-list-item 
+        v-if="isLogin === false"
+        router :to="{name:'login'}" 
+        exact>
           <v-list-item-action>
             <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>login</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item 
+        v-if="isLogin ===true"
+        router :to="{name:'mypage'}"
+        exact>
+          <v-list-item-action>
+            <v-icon>mdi-contact-mail</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>mypage</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
