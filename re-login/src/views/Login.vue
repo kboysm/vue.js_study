@@ -15,12 +15,12 @@
             md="4"
           >
             <v-alert 
-            :value="isError"
+            :value="isLoginError"
             type="error">
                 아이디와 비밀번호를 확인해 주세요.
             </v-alert>
             <v-alert 
-            :value="loginSuccess"
+            :value="isLogin"
             type="success">
                 아이디와 비밀번호를 확인해 주세요.
             </v-alert>
@@ -58,7 +58,10 @@
                 <v-btn 
                 depressed
                 block
-                @click="login()"
+                @click="login({
+                    //name:name -> 은 name으로 축약 가능 객체형태에서 name , age 는 name:name , age:age라는 의미
+                    email,password
+                })"
                 >로그인</v-btn>
               </v-card-actions>
             </v-card>
@@ -70,6 +73,7 @@
 </template>
 
 <script>
+import {mapActions,mapState} from 'vuex'
   export default {
     props: {
       source: String,
@@ -78,27 +82,13 @@
         return{
             email:null,
             password:null,
-            allUsers:[
-                {id:1,name:'LSM',email:'QWE@naver.com',password:'1234'},
-                {id:2,name:'QWE',email:'ASD@naver.com',password:'1234'},
-                {id:3,name:'TGF',email:'ZXC@naver.com',password:'1234'},
-            ],
-            isError:false,
-            loginSuccess:false,
         }
     },
+    computed:{
+        ...mapState(['isLogin','isLoginError'])
+    },
     methods:{
-        login(){
-            let selectedUser = null
-            this.allUsers.forEach(user=>{
-                if(user.email === this.email) {selectedUser =user}
-            })
-            selectedUser === null ?this.isError=true:
-            selectedUser.password !== this.password?
-            this.isError=true:
-            this.loginSuccess=true;
-            }
-            
+        ...mapActions(['login']),
         }
     }
   

@@ -31,6 +31,21 @@
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Application</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn 
+      v-if="isLogin"
+      icon>
+        웰컴
+      </v-btn>
+
+      <v-btn 
+      v-else
+      router :to="{name:'login'}"
+      icon>
+        로그인
+      </v-btn>
     </v-app-bar>
 
     <v-content>
@@ -46,6 +61,7 @@
 </template>
 
 <script>
+import {mapState} from'vuex'
   export default {
     props: {
       source: String,
@@ -53,5 +69,8 @@
     data: () => ({
       drawer: null,
     }),
+    computed:{
+      ...mapState(['isLogin'])
+    }
   }
 </script>
