@@ -64,6 +64,7 @@
                 })"
                 >로그인</v-btn>
                 <v-btn @click="test">테스트</v-btn>
+                <v-btn @click="postTest">post테스트</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -101,6 +102,19 @@ import axios from 'axios'
             }).then(()=>{
               //always executed
               console.log('무조건 실행')
+            })
+        },
+        postTest(){
+           axios
+            .post('https://reqres.in/api/register',{
+            "email": "eve.holt@reqres.in",
+            "password": "pistol"
+            //token이 반환된다.
+            })
+            .then(res=>{
+              console.log(res);
+            }).catch(err=>{
+              console.log(err);
             })
         }
         },
