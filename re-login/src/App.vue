@@ -47,13 +47,27 @@
       <v-toolbar-title>Application</v-toolbar-title>
 
       <v-spacer></v-spacer>
+        <v-menu  v-if="isLogin" open-on-hover top offset-y>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  v-on="on"
+                  flat
+                >
+                  Dropdown
+                </v-btn>
+              </template>
 
-      <v-btn 
-      v-if="isLogin"
-      icon>
-        웰컴
-      </v-btn>
-
+              <v-list>
+                <v-list-item router :to="{name:'mypage'}">
+                  <v-list-item-title>마이페이지</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                @click="$store.dispatch('logout')"
+                >
+                  <v-list-item-title>로그아웃</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
       <v-btn 
       v-else
       router :to="{name:'login'}"
@@ -83,6 +97,9 @@ import {mapState} from'vuex'
     data: () => ({
       drawer: null,
     }),
+    // methods:{
+    //   ...mapActions(['logout'])
+    // },
     computed:{
       ...mapState(['isLogin'])
     }
