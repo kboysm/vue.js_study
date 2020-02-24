@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 
 const rejectAuthUser=(to,from,next)=>{
   if(store.state.isLogin === true){
-    alert('이미 로그인 상태')
+
     next('/')
   }else{
     next()
@@ -16,7 +16,7 @@ const rejectAuthUser=(to,from,next)=>{
 }
 const onlyAuthUser=(to,from,next)=>{
   if(store.state.isLogin === false){
-    alert('로그인을 해주세요')
+
     next('/login')
   }else{
     next()

@@ -32,28 +32,32 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    login({commit},loginObj){
-        // let selectedUser = null
-        // state.allUsers.forEach(user=>{
-        //         if(user.email === loginObj.email) {selectedUser =user}
-        //     })
-        //     if(selectedUser === null || selectedUser.password !== loginObj.password)
-        //     commit('loginError')
-        //     else{
-        //       commit('loginSuccess',selectedUser)
-        //       router.push({name:'mypage'})
-        //   }
-        axios
+    login({dispatch},loginObj){ 
+        axios //첫번째 axios : 로그인 -> 토큰 반환
         .post('https://reqres.in/api/login',loginObj)
         .then(res=>{
           //성공 시 토큰이 반환 -> 유저 정보를 가져올 수 있음
           let token = res.data.token
-          let config ={
-            headers:{
-              "access-token":token
-            }
-          }
-          axios.get('https://reqres.in/api/users/2',config)
+          localStorage.setItem('access_token',token)
+          dispatch("getMemberInfo")
+          
+        }).catch(()=>{
+          alert('요청하신 정보가 일치하지 않습니다.')
+        })
+    },
+    logout({commit}){
+      commit('logout')
+      router.push({name:'home'})
+    },
+    getMemberInfo({commit}){
+      let token=localStorage.getItem('access_token')
+      let config ={
+        headers:{
+          "access-token":token
+        }
+      }
+      axios.get('https://reqres.in/api/users/2',config) //두번째 axios : 토큰 -> 멤버 정보를 반환
+          //새로 고침 -> 토큰만 가지고 멤버정보를 요청
           .then(response=>{
             let userInfo ={
               id : response.data.data.id,
@@ -67,16 +71,7 @@ export default new Vuex.Store({
           .catch(()=>{
             alert('요청하신 정보가 일치하지 않습니다.')
           })
-          .catch
-          console.log(res);
-        }).catch(()=>{
-          alert('요청하신 정보가 일치하지 않습니다.')
-        })
     },
-    logout({commit}){
-      commit('logout')
-      router.push({name:'home'})
-    }
   },
   modules: {
   }
