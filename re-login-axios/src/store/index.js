@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 import router from '../router/index'
 Vue.use(Vuex)
 
@@ -31,17 +32,39 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    login({state,commit},loginObj){
-        let selectedUser = null
-        state.allUsers.forEach(user=>{
-                if(user.email === loginObj.email) {selectedUser =user}
-            })
-            if(selectedUser === null || selectedUser.password !== loginObj.password)
-            commit('loginError')
-            else{
-              commit('loginSuccess',selectedUser)
-              router.push({name:'mypage'})
+    login({commit},loginObj){
+        // let selectedUser = null
+        // state.allUsers.forEach(user=>{
+        //         if(user.email === loginObj.email) {selectedUser =user}
+        //     })
+        //     if(selectedUser === null || selectedUser.password !== loginObj.password)
+        //     commit('loginError')
+        //     else{
+        //       commit('loginSuccess',selectedUser)
+        //       router.push({name:'mypage'})
+        //   }
+        axios
+        .post('https://reqres.in/api/login',loginObj)
+        .then(res=>{
+          //성공 시 토큰이 반환 -> 유저 정보를 가져올 수 있음
+          let token = res.data.token
+          let config ={
+            headers:{
+              "access-token":token
+            }
           }
+          axios.get('https://reqres.in/api/users/2',config)
+          .then(response=>{
+            console.log(response);
+          })
+          .catch(error=>{
+            console.log(error);
+          })
+          .catch
+          console.log(res);
+        }).catch(err=>{
+          console.log(err);
+        })
     },
     logout({commit}){
       commit('logout')

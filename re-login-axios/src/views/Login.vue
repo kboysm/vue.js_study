@@ -63,8 +63,8 @@
                     email,password
                 })"
                 >로그인</v-btn>
-                <v-btn @click="test">테스트</v-btn>
-                <v-btn @click="postTest">post테스트</v-btn>
+                <!-- <v-btn @click="test">테스트</v-btn>
+                <v-btn @click="postTest">post테스트</v-btn> -->
               </v-card-actions>
             </v-card>
           </v-col>
@@ -76,7 +76,7 @@
 
 <script>
 import {mapActions,mapState} from 'vuex'
-import axios from 'axios'
+
   export default {
     props: {
       source: String,
@@ -92,31 +92,31 @@ import axios from 'axios'
     },
     methods:{
         ...mapActions(['login']),
-        test(){
-          axios
-            .get('https://reqres.in/api/users?page=2')
-            .then(res=>{
-              console.log(res);
-            }).catch(err=>{
-              console.log(err);
-            }).then(()=>{
-              //always executed
-              console.log('무조건 실행')
-            })
-        },
-        postTest(){
-           axios
-            .post('https://reqres.in/api/register',{
-            "email": "eve.holt@reqres.in",
-            "password": "pistol"
-            //token이 반환된다.
-            })
-            .then(res=>{
-              console.log(res);
-            }).catch(err=>{
-              console.log(err);
-            })
-        }
+        // test(){
+        //   axios
+        //     .get('https://reqres.in/api/users?page=2')
+        //     .then(res=>{
+        //       console.log(res);
+        //     }).catch(err=>{
+        //       console.log(err);
+        //     }).then(()=>{
+        //       //always executed
+        //       console.log('무조건 실행')
+        //     })
+        // },
+        // postTest(){
+        //    axios
+        //     .post('https://reqres.in/api/register',{
+        //     "email": "eve.holt@reqres.in",
+        //     "password": "pistol"
+        //     //token이 반환된다.
+        //     })
+        //     .then(res=>{
+        //       console.log(res);
+        //     }).catch(err=>{
+        //       console.log(err);
+        //     })
+        // }
         },
         
     }
