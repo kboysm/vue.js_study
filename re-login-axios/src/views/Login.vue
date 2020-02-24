@@ -22,7 +22,7 @@
             <v-alert 
             :value="isLogin"
             type="success">
-                아이디와 비밀번호를 확인해 주세요.
+                로그인 성공!
             </v-alert>
             <v-card class="elevation-12">
               <v-toolbar

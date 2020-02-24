@@ -1,6 +1,6 @@
 <template>
     <div>
-        {{userInfo.name}} 님의 마이페이지
+        {{userInfo.first_name}} {{userInfo.last_name}} 님의 마이페이지
     </div>
 </template>
 <script>

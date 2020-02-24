@@ -51,7 +51,7 @@
               <template v-slot:activator="{ on }">
                 <v-btn
                   v-on="on"
-                  flat
+                
                 >
                   Dropdown
                 </v-btn>

@@ -55,15 +55,22 @@ export default new Vuex.Store({
           }
           axios.get('https://reqres.in/api/users/2',config)
           .then(response=>{
-            console.log(response);
+            let userInfo ={
+              id : response.data.data.id,
+              first_name:response.data.data.first_name,
+              last_name:response.data.data.last_name,
+              avatar:response.data.data.avatar
+            }
+            commit('loginSuccess',userInfo)
+            router.push({name:'mypage'})
           })
-          .catch(error=>{
-            console.log(error);
+          .catch(()=>{
+            alert('요청하신 정보가 일치하지 않습니다.')
           })
           .catch
           console.log(res);
-        }).catch(err=>{
-          console.log(err);
+        }).catch(()=>{
+          alert('요청하신 정보가 일치하지 않습니다.')
         })
     },
     logout({commit}){
