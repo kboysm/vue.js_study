@@ -1,11 +1,28 @@
 var createError = require('http-errors');
 var express = require('express');
 var router = express.Router();
-router.use('/test',require('./test'));
-router.use('/user',require('./user'));
+
 /* GET home page. */
-router.get('/hello', function(req, res, next) {
-  res.send({msg:'hello',a:1});
+router.get('/', function(req, res, next) {
+  const us =[
+    {
+      name:'길용성',
+      age:14,
+      show:false
+    },
+    {
+      name:'김민우',
+      age:15,
+      show:false
+    },
+    {
+      name:'주금만',
+      age:19,
+      show:false
+    },
+    
+  ]
+  res.send({user:us});
 });
 router.get('/yy', function(req, res, next) {
   res.send({msg:'yy page',a:1});
