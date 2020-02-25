@@ -1,53 +1,128 @@
 <template>
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
-      <v-flex xs12 sm6 md4 v-for="(u,i) in users" :key="i">
+      <v-flex xs12 sm3>
         <v-card
     class="mx-auto"
     max-width="344"
   >
-    <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-      height="200px"
-    ></v-img>
 
     <v-card-title>
-      user name : {{u.name}}
+      Pra-Rest-Api-get
     </v-card-title>
 
     <v-card-subtitle>
-      user age : {{u.age}}
+      express-vue-rest-api
     </v-card-subtitle>
-
+    <v-card-text>
+      <v-textarea
+      v-model="getMd"
+      >
+      </v-textarea>
+    </v-card-text>
     <v-card-actions>
-      <v-btn text>Share</v-btn>
-
       <v-btn
         color="purple"
         text
+        @click="getReq"
       >
-        Explore
+        submit
       </v-btn>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        icon
-        @click="u.show = !u.show"
-      >
-        <v-icon>{{ users[i].show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-      </v-btn>
     </v-card-actions>
+  </v-card>
+      </v-flex>
+      <v-flex xs12 sm3>
+        <v-card
+    class="mx-auto"
+    max-width="344"
+  >
 
-    <v-expand-transition>
-      <div v-show="u.show">
-        <v-divider></v-divider>
+    <v-card-title>
+      Pra-Rest-Api-post
+    </v-card-title>
 
-        <v-card-text>
-          I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-        </v-card-text>
-      </div>
-    </v-expand-transition>
+    <v-card-subtitle>
+      express-vue-rest-api
+    </v-card-subtitle>
+    <v-card-text>
+      <v-textarea
+      v-model="postMd"
+      >
+      </v-textarea>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn
+        color="purple"
+        text
+        @click="postReq"
+      >
+        submit
+      </v-btn>
+
+    </v-card-actions>
+  </v-card>
+      </v-flex>
+      <v-flex xs12 sm3>
+        <v-card
+    class="mx-auto"
+    max-width="344"
+  >
+
+    <v-card-title>
+      Pra-Rest-Api-put
+    </v-card-title>
+
+    <v-card-subtitle>
+      express-vue-rest-api
+    </v-card-subtitle>
+    <v-card-text>
+      <v-textarea
+      v-model="putMd"
+      >
+      </v-textarea>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn
+        color="purple"
+        text
+        @click="putReq"
+      >
+        submit
+      </v-btn>
+
+    </v-card-actions>
+  </v-card>
+      </v-flex>
+      <v-flex xs12 sm3>
+        <v-card
+    class="mx-auto"
+    max-width="344"
+  >
+
+    <v-card-title>
+      Pra-Rest-Api-delete
+    </v-card-title>
+
+    <v-card-subtitle>
+      express-vue-rest-api
+    </v-card-subtitle>
+    <v-card-text>
+      <v-textarea
+      v-model="delMd"
+      >
+      </v-textarea>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn
+        color="purple"
+        text
+        @click="delReq"
+      >
+        submit
+      </v-btn>
+
+    </v-card-actions>
   </v-card>
       </v-flex>
     </v-layout>
@@ -62,20 +137,70 @@ export default {
   data(){
     return{
       users:[],
+      getMd:'',
+      postMd:'',
+      putMd:'',
+      delMd:'',
     }
   },
   methods: {
-    
+    //여기서는 api의 동작을 확인만한다.
+    getReq(){
+      axios.get('http://localhost:3000/api/user',{
+        userName : 'getMan'
+      })
+          .then(res=>{
+            this.getMd = JSON.stringify(res.data);
+            // this.users = res.data.user
+            // console.log(res)
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+    },
+    postReq(){
+      axios.post('http://localhost:3000/api/user',{
+        userName : 'postMan'
+      })
+          .then(res=>{
+            this.postMd = JSON.stringify(res.data);
+            // this.users = res.data.user
+            // console.log(res)
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+    },
+
+    //put, delete는 식별자를 찾아가야한다. 보통 params로 넘겨서 찾게함 , delete는 /5같은 형태로 넘김
+
+    putReq(){
+      axios.put('http://localhost:3000/api/user',{
+        userName : 'putMan'
+      })
+          .then(res=>{
+            this.putMd = JSON.stringify(res.data);
+            // this.users = res.data.user
+            // console.log(res)
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+    },
+    delReq(){
+      axios.delete('http://localhost:3000/api/user')
+          .then(res=>{
+            this.delMd = JSON.stringify(res.data);
+            // this.users = res.data.user
+            // console.log(res)
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+    },
   },
   mounted() {
-    axios.get('http://localhost:3000/api/user')
-    .then(res=>{
-      this.users = res.data.user
-      console.log(res)
-    })
-    .catch(err=>{
-      console.log(err)
-    })
+    
   },
 }
 </script>
