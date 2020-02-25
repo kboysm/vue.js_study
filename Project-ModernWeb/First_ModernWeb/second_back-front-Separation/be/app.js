@@ -36,15 +36,13 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost:27017/local',{ useNewUrlParser: true, useUnifiedTopology: true },(err)=>{
+mongoose.set('useCreateIndex', true);
+const User = require('./models/users')
+mongoose.connect('mongodb://localhost:27017/nemv',{ useNewUrlParser: true, useUnifiedTopology: true },(err)=>{
   if(err) return console.error(err)
-  const userSchema= new mongoose.Schema({
-    name:{ type:String ,default:''},
-    age : {type:Number , default:1}
-  })
-  const User = mongoose.model('User',userSchema)
+  
+
   // User.create({name:'하하'}).then(r => console.log(r)).catch(e =>console.log(e));
   // User.find().then(r => console.log(r)).catch(e =>console.log(e));
   // User.updateOne({_id: '5e558e93f3591a191418b293'},{$set:{age:25}})
@@ -54,6 +52,6 @@ mongoose.connect('mongodb://localhost:27017/local',{ useNewUrlParser: true, useU
   // })
   // .then(r => console.log(r))
   // .catch(e =>console.log(e));
-  User.deleteOne({name:'하하'}).then(r => console.log(r)).catch(e =>console.log(e));
+  // User.deleteOne({name:'하하'}).then(r => console.log(r)).catch(e =>console.log(e));
 })
 
