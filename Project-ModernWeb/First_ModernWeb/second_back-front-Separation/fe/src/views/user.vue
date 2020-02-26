@@ -125,7 +125,64 @@
     </v-card-actions>
   </v-card>
       </v-flex>
+
+            <v-btn
+              absolute
+              dark
+              fab
+              bottom
+              right
+              color="pink"
+              @click="mdUp"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+
     </v-layout>
+
+       <v-dialog v-model="dialog" persistent max-width="600px">
+      <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">User Profile</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  label="name"
+                  hint="Name"
+                  persistent-hint
+                  required
+                  v-model="userName"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-select
+                  :items="userAges"
+                  label="Age"
+                  required
+                  v-model="userAge"
+                ></v-select>
+              </v-col>
+              
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="postUser">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
+
+
   </v-container>
 </template>
 
@@ -136,11 +193,15 @@ import axios from 'axios'
 export default {
   data(){
     return{
+      dialog:false,
       users:[],
       getMd:'',
       postMd:'',
       putMd:'',
       delMd:'',
+      userName:'',
+      userAge:0,
+      userAges:[],
     }
   },
   methods: {
@@ -198,9 +259,27 @@ export default {
             console.log(err)
           })
     },
+    mdUp(){
+       this.dialog = true
+    },
+    // postUser(){
+    //   console.log(this.userName +","+ this.userAge)
+    //   this.dialog = false
+    //   axios.post('http://localhost:3000/api/user',{
+    //     name : this.userName,age:this.userAge
+    //   })
+    //       .then(res=>{
+    //         this.postMd = JSON.stringify(res.data);
+    //         // this.users = res.data.user
+    //         // console.log(res)
+    //       })
+    //       .catch(err=>{
+    //         console.log(err)
+    //       })
+    // }
   },
   mounted() {
-    
+    for(let i=10;i<40;i++) this.userAges.push(i)
   },
 }
 </script>
