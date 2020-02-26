@@ -45,13 +45,28 @@ router.post('/', function(req, res, next) {
   // let reqres = req.body.userName;
   // res.send({success : true ,msg : 'post ok', userName:reqres});
 });
-router.put('/', function(req, res, next) {
-  let reqres = req.body.userName;
-  res.send({success : true ,msg : 'put ok', userName:reqres});
+router.put('/:id', function(req, res, next) {
+  const id = req.params.id
+  const {name ,age} = req.body
+  User.updateOne({_id:id},{$set: {name ,age}})
+    .then(r => {
+      res.send({success:true , msg :r});
+    })
+    .catch(e =>{
+      res.send({success:false , msg : e});
+    })
+  // res.send({success : true ,msg : 'put ok', userName:reqres});
 });
-router.delete('/', function(req, res, next) {
-  let reqres = req.body.userName;
-  res.send({success : true ,msg : 'delete ok', userName:reqres});
+router.delete('/:id', function(req, res, next) {
+  const id = req.params.id
+  User.deleteOne({_id:id})
+    .then(r => {
+      res.send({success:true , msg :r});
+    })
+    .catch(e =>{
+      res.send({success:false , msg : e});
+    })
+  // res.send({success : true ,msg : 'delete ok', userName:reqres});
 });
 
 

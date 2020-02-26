@@ -143,7 +143,7 @@
       <v-btn
         color="orange"
         text
-        @click="putUser"
+        @click="putDialog(u)"
       >
         수정
       </v-btn>
@@ -151,7 +151,7 @@
       <v-btn
         color="error"
         text
-        @click="delUser"
+        @click="delUser(u._id)"
       >
         삭제
       </v-btn>
@@ -205,6 +205,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="putUser">update</v-btn>
           <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
           <v-btn color="blue darken-1" text @click="postUser">Save</v-btn>
         </v-card-actions>
@@ -233,6 +234,7 @@ import axios from 'axios'
 export default {
   data(){
     return{
+      putId:'',
       sbMsg:'',
       snackbar:false,
       dialog:false,
@@ -302,7 +304,9 @@ export default {
           })
     },
     mdUp(){
-       this.dialog = true
+      this.userName=''
+      this.userAge=0
+      this.dialog = true
     },
     postUser(){
       console.log(this.userName +","+ this.userAge)
@@ -335,11 +339,35 @@ export default {
             console.log(err)
           })
     },
-    putUser(id){
-
+    putDialog(user){
+      this.putId =user._id
+      this.userName =user.name
+      this.userAge=user.age
+      this.dialog=true
+    }
+    ,
+    putUser(){
+      this.dialog=false
+      axios.put(`http://localhost:3000/api/user/${this.putId}`,{
+        name:this.userName , age:this.userAge
+      })
+          .then(res=>{
+            this.pop('사용자 수정 완료')
+            this.getUsers()
+          })
+          .catch(err=>{
+            this.pop(err.message)
+          })
     },
     delUser(id){
-
+      axios.delete(`http://localhost:3000/api/user/${id}`)
+          .then(res=>{
+            this.pop('사용자 삭제 완료')
+            this.getUsers()
+          })
+          .catch(err=>{
+            this.pop(err.message)
+          })
     }
     
   },
