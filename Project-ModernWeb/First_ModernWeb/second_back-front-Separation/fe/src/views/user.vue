@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
-      <v-flex xs12 sm3>
+      <!-- <v-flex xs12 sm3>
         <v-card
     class="mx-auto"
     max-width="344"
@@ -124,8 +124,41 @@
 
     </v-card-actions>
   </v-card>
-      </v-flex>
+      </v-flex> -->
+      <v-flex xs12 sm12 sm3 v-for="(u,i) in users" :key="i">
+        <v-card
+    class="mx-auto"
+    max-width="400"
+  >
 
+    <v-card-subtitle class="pb-0">Number 10</v-card-subtitle>
+
+    <v-card-text class="text--primary">
+      <div>name : {{u.name}}</div>
+
+      <div>age : {{u.age}}</div>
+    </v-card-text>
+
+    <v-card-actions>
+      <v-btn
+        color="orange"
+        text
+        @click="putUser"
+      >
+        수정
+      </v-btn>
+
+      <v-btn
+        color="error"
+        text
+        @click="delUser"
+      >
+        삭제
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+
+      </v-flex>
             <v-btn
               absolute
               dark
@@ -141,9 +174,7 @@
     </v-layout>
 
        <v-dialog v-model="dialog" persistent max-width="600px">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-      </template>
+      
       <v-card>
         <v-card-title>
           <span class="headline">User Profile</span>
@@ -180,9 +211,18 @@
       </v-card>
     </v-dialog>
 
-
-
-
+    <v-snackbar
+      v-model="snackbar"
+    >
+      {{sbMsg}}
+      <v-btn
+        color="pink"
+        text
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -193,6 +233,8 @@ import axios from 'axios'
 export default {
   data(){
     return{
+      sbMsg:'',
+      snackbar:false,
       dialog:false,
       users:[],
       getMd:'',
@@ -262,24 +304,48 @@ export default {
     mdUp(){
        this.dialog = true
     },
-    // postUser(){
-    //   console.log(this.userName +","+ this.userAge)
-    //   this.dialog = false
-    //   axios.post('http://localhost:3000/api/user',{
-    //     name : this.userName,age:this.userAge
-    //   })
-    //       .then(res=>{
-    //         this.postMd = JSON.stringify(res.data);
-    //         // this.users = res.data.user
-    //         // console.log(res)
-    //       })
-    //       .catch(err=>{
-    //         console.log(err)
-    //       })
-    // }
+    postUser(){
+      console.log(this.userName +","+ this.userAge)
+      this.dialog = false
+      axios.post('http://localhost:3000/api/user',{
+        name : this.userName,age:this.userAge
+      })
+          .then(res=>{
+            this.pop('사용자 등록 완료')
+            this.getUsers()
+          })
+          .catch(err=>{
+            this.pop(err.message)
+            
+          })
+    },
+    pop(msg){
+      this.snackbar=true
+      this.sbMsg = msg
+    },
+    getUsers(){
+       axios.get('http://localhost:3000/api/user')
+          .then(res=>{
+            console.log(res.data)
+            this.users = res.data.user
+            // this.users = res.data.user
+            // console.log(res)
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+    },
+    putUser(id){
+
+    },
+    delUser(id){
+
+    }
+    
   },
   mounted() {
     for(let i=10;i<40;i++) this.userAges.push(i)
+    this.getUsers()
   },
 }
 </script>
