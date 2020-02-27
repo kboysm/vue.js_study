@@ -348,7 +348,7 @@ export default {
     ,
     putUser(){
       this.dialog=false
-      axios.put(`http://localhost:3000/api/user/${this.putId}`,{
+      axios.put(`http://localhost:3000/api/user/${this.putId}`,{//객체에 piuId를 담아 보내도 성공이지만 RESTapi에서는 이렇게 한다고 함 
         name:this.userName , age:this.userAge
       })
           .then(res=>{

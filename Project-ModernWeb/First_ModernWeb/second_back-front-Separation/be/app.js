@@ -55,3 +55,11 @@ mongoose.connect('mongodb://localhost:27017/nemv',{ useNewUrlParser: true, useUn
   // User.deleteOne({name:'하하'}).then(r => console.log(r)).catch(e =>console.log(e));
 })
 
+var jwt = require('jsonwebtoken');
+const key = 'veryNiceKey'
+var token = jwt.sign({ name: 'lsm',email:'oop@naver.com' }, key);
+
+var decoded = jwt.verify(token, key);
+console.log(decoded) // 출력 결과 : { name: 'lsm', email: 'oop@naver.com', iat: 1582795982 } 
+// iat는 발행한 시간을 의미
+console.log(new Date(decoded.iat * 1000))//날짜 시간정보 출력
