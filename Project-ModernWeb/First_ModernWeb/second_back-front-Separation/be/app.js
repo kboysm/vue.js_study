@@ -61,27 +61,27 @@ mongoose.connect('mongodb://localhost:27017/nemv',{ useNewUrlParser: true, useUn
 ////////////////////////////////// jwt /////////////////////////////////////////
 var jwt = require('jsonwebtoken');
 const key = 'veryNiceKey'
-var token = jwt.sign({ name: 'lsm',email:'oop@naver.com' }, key);
+// var token = jwt.sign({ name: 'lsm',email:'oop@naver.com' }, key);
 
-var decoded = jwt.verify(token, key);
-console.log(decoded) // 출력 결과 : { name: 'lsm', email: 'oop@naver.com', iat: 1582795982 } 
-// iat는 발행한 시간을 의미
-console.log(new Date(decoded.iat * 1000))//날짜 시간정보 출력
+// var decoded = jwt.verify(token, key);
+// console.log(decoded) // 출력 결과 : { name: 'lsm', email: 'oop@naver.com', iat: 1582795982 } 
+// // iat는 발행한 시간을 의미
+// console.log(new Date(decoded.iat * 1000))//날짜 시간정보 출력
 
 ///////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////// 콜백 ////////////////////////////////////
 
-const foo = (v,cb) =>{
-  if(v>1) return cb(new Error('abcd'))
-  setTimeout(()=>{
-    cb(null,v+1)
-  },3000)
-}
-foo(1,(err,r)=>{
-if(err) return console.error(err.message)
-console.log(r)
-});
+// const foo = (v,cb) =>{
+//   if(v>1) return cb(new Error('abcd'))
+//   setTimeout(()=>{
+//     cb(null,v+1)
+//   },3000)
+// }
+// foo(1,(err,r)=>{
+// if(err) return console.error(err.message)
+// console.log(r)
+// });
 
 User.findOne({name:'aaa', age:15},(err,u)=>{
   if(err) return console.error(err.message)
@@ -91,6 +91,22 @@ User.findOne({name:'aaa', age:15},(err,u)=>{
       if(err) return console.error(err.message)
       console.log(cu);
       jwt.sign({name:cu.name,age:cu.age},key,(err,token)=>{
+        if(err) return console.error(err.message)
+        console.log(token)
+        jwt.verify(token,key,(err,v)=>{
+          if(err) return console.error(err.message)
+          console.log(v)
+        })
+      })
+    })
+  }
+  else {
+    console.log(u)
+    const user =u
+    User.update({_id:u._id},{$inc:{age:1}},(err,ur)=>{ //$inc는 해당 {속성:값} -> 속성값에 +1 더해준다는 의미
+      if(err) return console.error(err.message)
+      console.log(ur)
+      jwt.sign({name:user.name,age:user.age+1},key,(err,token)=>{
         if(err) return console.error(err.message)
         console.log(token)
         jwt.verify(token,key,(err,v)=>{
