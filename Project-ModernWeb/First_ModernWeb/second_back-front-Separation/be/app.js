@@ -160,7 +160,17 @@ User.findOne({name:'aaa'})
     console.error(err.message)
   })
 
+                                    // async await 
 
-//예전에는 주로 이렇게 코드를 작성했으니 요즘에는 이렇게 하지 않는다!
-//왜 ? promise때문에
-/////////////////////////////////////////////////////////////////////////////////////
+const getToken = async (name) =>{ // 함수 앞에 async 붙이면 그 함수는 Promise로 리턴
+  let u = await User.findOne({name}) // await은 동기식 처럼 async안에서 이처리가 끝날때까지 다음 처리 불가상태로 만듬
+  if(!u) u = await User.create({name,age:10})
+  if(u.age >12) throw new Error(`${u.age}는 나이가 너무 많습니다.`)
+  const ur = await User.updateOne({_id:u._id},{$inc:{age:1}})
+  if(!ur.nModified) throw new Error('수정된 것이 없네요')
+  u = await User.findOne({_id:u._id})
+  const token = await signToken(u,key)
+  const v = await verifyToken(token,key)
+  return v
+}
+
