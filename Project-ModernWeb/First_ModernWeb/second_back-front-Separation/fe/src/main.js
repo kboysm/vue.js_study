@@ -5,7 +5,8 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
-if (process.env.NODE_ENV === 'production' && location.protocol === 'http:' && cfg.httpsOnly) location.replace(`https://${location.hostname}`)
+Vue.prototype.$apiRootPath= 'http://localhost:3000/api/'
+
 new Vue({
   router,
   store,

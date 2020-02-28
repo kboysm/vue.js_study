@@ -54,16 +54,15 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
-                    label="Login"
-                    name="login"
+                  v-model="form.id"
+                    label="id"
                     prepend-icon="person"
                     type="text"
                   />
 
                   <v-text-field
-                    id="password"
+                    v-model="form.pwd"
                     label="Password"
-                    name="password"
                     prepend-icon="lock"
                     type="password"
                   />
@@ -71,7 +70,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary">Login</v-btn>
+                <v-btn color="primary" @click="signIn">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -82,9 +81,26 @@
 </template>
 
 <script>
+import axios from 'axios'
   export default {
     props: {
       source: String,
+    },
+    data(){
+      return{
+        form:{
+          id:'',
+          pawd:''
+        }
+      }
+    },
+    methods: {
+      signIn(){
+
+        axios.post(`${this.$apiRootPath}sign/in`,this.form)
+        .then(r => {console.log(r.data)})
+        .catch(e => console.error(e.message))
+      }
     },
   }
 </script>
