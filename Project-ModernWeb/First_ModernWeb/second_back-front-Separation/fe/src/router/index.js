@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Sign from '../views/sign.vue'
+import Header from '../views/header.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -14,6 +15,11 @@ const routes = [
     path: '/sign',
     name: '로그인',
     component: Sign
+  },
+  {
+    path: '/header',
+    name: '헤더',
+    component: Header
   },
   {
     path: '/user',

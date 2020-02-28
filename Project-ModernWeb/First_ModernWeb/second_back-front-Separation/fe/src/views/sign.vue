@@ -98,7 +98,11 @@ import axios from 'axios'
       signIn(){
 
         axios.post(`${this.$apiRootPath}sign/in`,this.form)
-        .then(r => {console.log(r.data)})
+        .then(r => {
+          if(!r.data.success) return console.error(d.data.msg)
+          localStorage.setItem('token',r.data.token)
+          this.$router.push('/header')
+        })
         .catch(e => console.error(e.message))
       }
     },
