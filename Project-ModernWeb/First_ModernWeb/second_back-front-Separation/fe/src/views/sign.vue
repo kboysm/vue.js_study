@@ -101,6 +101,7 @@ import axios from 'axios'
         .then(r => {
           if(!r.data.success) return console.error(d.data.msg)
           localStorage.setItem('token',r.data.token)
+          this.$store.commit('getToken')
           this.$router.push('/header')
         })
         .catch(e => console.error(e.message))

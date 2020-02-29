@@ -55,10 +55,10 @@
       </template>
 
       <v-list>
-        <v-list-item @click="$router.push({name:'로그인'})">
+        <v-list-item v-if="!$store.state.token" @click="$router.push({name:'로그인'})">
           <v-list-item-title>로그인</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="signOut">
+        <v-list-item v-else @click="signOut">
           <v-list-item-title>로그아웃</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -91,10 +91,10 @@
     data: () => ({
       drawer: null,
     }),
-    methods: {
-      signOut(){
-        localStorage.removeItem('token')
-        this.$router.push('/')
+      methods: {
+        signOut(){
+          this.$store.commit('delToken')
+          this.$router.push('/')
       },
     },
   }
