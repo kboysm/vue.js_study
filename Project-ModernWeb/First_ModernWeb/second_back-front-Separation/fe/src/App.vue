@@ -4,29 +4,16 @@
       v-model="drawer"
       app
     >
-      <v-list dense>
-        <v-list-item link :to="{name:'Home'}" exact>
+      <v-list dense 
+      v-for="(user,idx) in items" 
+      :key="idx"
+      >
+        <v-list-item link :to=user.to exact>
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link :to="{name:'사용자'}" exact>
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>user</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link :to="{name:'헤더'}" exact>
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>header</v-list-item-title>
+            <v-list-item-title>{{user.title}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -84,18 +71,65 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      source: String,
-    },
-    data: () => ({
+export default {
+  name: 'App',
+  data () {
+    return {
       drawer: null,
-    }),
-      methods: {
-        signOut(){
-          this.$store.commit('delToken')
-          this.$router.push('/')
-      },
-    },
+      items: [
+        {
+          icon: 'home',
+          title: 'lv0',
+          to: {
+            path: '/'
+          }
+        },
+        {
+          icon: 'home',
+          title: 'lv1',
+          to: {
+            path: '/lv1'
+          }
+        },
+        {
+          icon: 'home',
+          title: 'lv2',
+          to: {
+            path: '/lv2'
+          }
+        },
+        {
+          icon: 'home',
+          title: 'lv3',
+          to: {
+            path: '/lv3'
+          }
+        },
+        {
+          icon: 'face',
+          title: '사용자관리',
+          to: {
+            path: '/user'
+          }
+        },
+        {
+          icon: 'face',
+          title: '페이지관리',
+          to: {
+            path: '/page'
+          }
+        }
+      ],
+      title: this.$apiRootPath
+    }
+  },
+  mounted () {
+  },
+  methods: {
+    signOut () {
+      this.$store.commit('delToken')
+      this.$router.push('/')
+    }
   }
+}
 </script>

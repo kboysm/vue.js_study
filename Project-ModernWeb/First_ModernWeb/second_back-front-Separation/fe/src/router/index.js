@@ -9,6 +9,26 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'lv0',
+    component: () => import('../views/lv0')
+  },
+  {
+    path: '/lv1',
+    name: 'lv1',
+    component: () => import('../views/lv1')
+  },
+  {
+    path: '/lv2',
+    name: 'lv2',
+    component: () => import('../views/lv2')
+  },
+  {
+    path: '/lv3',
+    name: 'lv3',
+    component: () => import('../views/lv3')
+  },
+  {
+    path: '/',
     name: 'Home',
     component: Home
   },
@@ -26,6 +46,11 @@ const routes = [
       next()
     }
   },
+  {
+    path: '/page',
+    name: '페이지',
+    component: () => import('../views/page')
+  },   
   {
     path: '/block',
     name: '차단',
