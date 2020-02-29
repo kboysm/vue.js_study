@@ -90,7 +90,7 @@ import axios from 'axios'
       return{
         form:{
           id:'',
-          pawd:''
+          pawd:'',
         }
       }
     },
@@ -99,7 +99,7 @@ import axios from 'axios'
 
         axios.post(`${this.$apiRootPath}sign/in`,this.form)
         .then(r => {
-          if(!r.data.success) return console.error(d.data.msg)
+          if(!r.data.success) return console.error(r.data.msg)
           localStorage.setItem('token',r.data.token)
           this.$store.commit('getToken')
           this.$router.push('/header')

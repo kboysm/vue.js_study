@@ -4,28 +4,52 @@ import Home from '../views/Home.vue'
 import Sign from '../views/sign.vue'
 import Header from '../views/header.vue'
 import Block from '../views/block.vue'
+import axios from 'axios'
 Vue.use(VueRouter)
+
+Vue.prototype.$axios = axios
+const apiRootPath = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000/api/' : '/api/'
+Vue.prototype.$apiRootPath = apiRootPath
+
+const pageCheck = (to, from, next) => {
+  // return next()
+  axios.post(`${apiRootPath}page`, { name: to.path.replace('/', '') }, { headers: { Authorization: localStorage.getItem('token') } })
+    .then((r) => {
+      if (!r.data.success) throw new Error(r.data.msg)
+      next()
+    })
+    .catch((e) => {
+      // console.error(e.message)
+      next(`/block/${e.message}`)
+    })
+}
+
+
 
 const routes = [
   {
     path: '/',
     name: 'lv0',
-    component: () => import('../views/lv0')
+    component: () => import('../views/lv0'),
+    beforeEnter: pageCheck
   },
   {
     path: '/lv1',
     name: 'lv1',
-    component: () => import('../views/lv1')
+    component: () => import('../views/lv1'),
+    beforeEnter: pageCheck
   },
   {
     path: '/lv2',
     name: 'lv2',
-    component: () => import('../views/lv2')
+    component: () => import('../views/lv2'),
+    beforeEnter: pageCheck
   },
   {
     path: '/lv3',
     name: 'lv3',
-    component: () => import('../views/lv3')
+    component: () => import('../views/lv3'),
+    beforeEnter: pageCheck
   },
   {
     path: '/',

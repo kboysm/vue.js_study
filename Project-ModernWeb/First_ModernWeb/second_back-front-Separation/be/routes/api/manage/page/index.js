@@ -3,37 +3,28 @@ var createError = require('http-errors');
 var router = express.Router();
 const Page = require('../../../../models/pages')
 
-router.get('/', function(req, res, next) {
-  Page.find()
-    .then(r => {
-      res.send({ success: true, pages: r })
+router.post('/', function(req, res, next) {  
+  const { name } = req.body
+  Page.findOne({ name })
+    .then((r) => {
+      if (!r) {
+        if (req.user.lv) throw new Error(`페이지 ${name} 생성이 안되었습니다.`) // req.user.lv > 0
+        return Page.create({ name })
+      }
+      if (r.lv < req.user.lv) throw new Error(`페이지 ${name} 이용 자격이 없습니다.`)
+      return Page.updateOne({ _id: r._id }, { $inc: { inCnt: 1 } })
     })
-    .catch(e => {
-      res.send({ success: false })
+    .then(() => {
+    //   return Page.find()
+    // })
+    // .then((rs) => {
+    //   console.log(rs)
+      res.send({ success: true, d: req.user })
+    })
+    .catch((e) => {
+      res.send({ success: false, msg: e.message })
     })
 });
-
-router.put('/:_id', (req, res, next) => {
-  const _id = req.params._id
-  Page.updateOne({ _id }, { $set: req.body})
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
-})
-
-router.delete('/:_id', (req, res, next) => {
-  const _id = req.params._id
-  Page.deleteOne({ _id })
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
-})
 
 router.all('*', function(req, res, next) {
   next(createError(404, '그런 api 없어'));
