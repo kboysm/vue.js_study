@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Sign from '../views/sign.vue'
 import Header from '../views/header.vue'
+import Block from '../views/block.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -19,7 +20,16 @@ const routes = [
   {
     path: '/header',
     name: '헤더',
-    component: Header
+    component: Header,
+    beforeEnter: (to, from, next) => {
+      if(!localStorage.getItem('token')) return next('block')
+      next()
+    }
+  },
+  {
+    path: '/block',
+    name: '차단',
+    component: Block
   },
   {
     path: '/user',
