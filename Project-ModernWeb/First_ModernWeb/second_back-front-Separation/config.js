@@ -4,6 +4,6 @@ let cfg ={
         pwd:'1234',
         name:'lsm'
     },
-    secretkey:'abcd'
+    secretKey:'abcd'
 }
 module.exports=cfg

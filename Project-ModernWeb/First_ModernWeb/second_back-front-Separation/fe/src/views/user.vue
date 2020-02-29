@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     getUsers () {
-      this.$axios.get(`${this.$apiRootPath}manage/user`)
+      this.$axios.get(`${this.$apiRootPath}manage/user`,{headers:{authorization:this.$store.state.token}})
         .then((r) => {
           console.log(r.data)
           this.users = r.data.users
