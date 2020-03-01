@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const crypto = require('crypto');
+var moment = require('moment')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -39,13 +39,16 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+moment.locale('ko')
+console.log(new Date())
+console.log(moment().toDate())
+console.log(moment().format('YYMMDD'))//데이터 format작성 가능
+console.log(moment().minutes()) //분만 뽑아냄
+console.log(moment().add(3, 'minutes').toString()) //시간,분등과 같은 데이터를 더할 수 있음
+console.log(moment().fromNow())
+console.log(moment().add(-3,'hours').fromNow())
 
+const ct = moment()
+const bt = moment().add(-4,'hours')
 
-// Using the factory defaults.
-const key1 = crypto.scryptSync('secret', 'salt', 64);
-console.log(key1.toString('hex'));  // '3745e48...08d59ae'
-// Using a custom N parameter. Must be a power of two.
-const key2 = crypto.scryptSync('secret', 'salt', 64, { N: 1024 }.toString('hex')); //db에 저장할때는 꼭 이렇게 하기 
-console.log(key2.toString('hex'));  // '3745e48...aa39b34'
-
-//몽고디비일때는 salt값을 _id로 해주면 됨 secret 부분은 사용자의 비번번호가 드감 
+console.log(bt.diff(moment(),'minutes'))
