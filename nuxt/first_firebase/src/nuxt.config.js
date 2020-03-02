@@ -1,6 +1,6 @@
-const colors = require('vuetify/es5/util/colors').default
+import colors from 'vuetify/es5/util/colors'
 
-module.exports = {
+export default {
   mode: 'universal',
   /*
   ** Headers of the page
@@ -30,7 +30,6 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/etc'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -43,7 +42,7 @@ module.exports = {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios', 'vuetify-dialog/nuxt' 
+    '@nuxtjs/axios',
   ],
   /*
   ** Axios module configuration
@@ -82,7 +81,7 @@ module.exports = {
     extend (config, ctx) {
     }
   },
-  serverMiddleware: [
-    { path: '/api', handler: '~/api/index.js' }
-  ]
+  generate:{
+    dir:'../public'
+  }
 }
