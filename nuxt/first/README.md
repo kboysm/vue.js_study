@@ -1,6 +1,6 @@
-# first_nuxt
+# first
 
-> first_nuxt
+> first nuxt
 
 ## Build Setup
 
