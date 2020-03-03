@@ -11,7 +11,7 @@
         </v-data-table>
         <v-card-actions>
             <v-spacer />
-            <v-btn @click="openDialog('create')">create</v-btn>
+            <v-btn @click="openDialog('create')">글쓰기</v-btn>
         </v-card-actions>
         <v-dialog v-model="dialog">
             <v-card>
@@ -24,7 +24,7 @@
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer />
-                <v-btn @click="create">create</v-btn>
+                <v-btn @click="create">작성</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -51,6 +51,9 @@ export default {
             selectItem:null
         }
     },
+    mounted(){
+        this.read()
+    },
     methods:{
         openDialog(mode,sel){
             this.mode=mode
@@ -62,18 +65,27 @@ export default {
             }
             this.dialog=true
         },
-        create(){
-            const item={
-                id:Math.random(),
-                title:this.form.title,
-                content:this.form.content,
-                createAt:new Date()
-            }
-            this.items.push(item)
+        async create(){
+            const item = Object.assign(this.form)
+            item.createAt= new Date()
+            const s = await this.$db.collection('board').add(item)
+            console.log(s)
             this.dialog=false
+            await this.read()
         },
-        read(){
-            
+        async read(){
+            const s = await this.$db.collection('board').get()
+            this.items=[]
+            s.forEach(d => {
+               const r = d.data()
+               const item = {
+                   id:d.id,
+                   createAt:r.createAt.toDate().toLocaleString(),
+                   title:r.title,
+                   content:r.content
+               }
+               this.items.push(item)
+            })
         }
     }
 }
