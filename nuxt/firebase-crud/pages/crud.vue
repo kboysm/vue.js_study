@@ -1,13 +1,20 @@
 <template>
     <v-card>
         <v-card-title>firebase->crud</v-card-title>
-        <v-data-table :headers="headers" :items="items">
+        <v-data-table :headers="headers" :items="items" class="elevation-1">
             <template v-slot:items="props">
-            <td>{{ props.item.id}} </td>
-            <td>{{ props.item.createAt}} </td>
-            <td>{{ props.item.title}} </td>
-            <td>{{ props.item.content}} </td>
-        </template>
+        <td>{{ props.item.id }}</td>
+        <td>{{ props.item.createAt }}</td>
+        <td>{{ props.item.title }}</td>
+        <td>{{ props.item.content }}</td>
+        
+      </template>
+      <template v-slot:item.action="props">
+      <v-btn icon @click="openDialog('update', props.item)"
+            ><v-icon> mdi-pencil</v-icon>
+          </v-btn>
+          <v-btn icon small @click="remove(props.item)"><v-icon> mdi-delete</v-icon></v-btn>
+    </template>
         </v-data-table>
         <v-card-actions>
             <v-spacer />
@@ -24,7 +31,8 @@
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer />
-                <v-btn @click="create">작성</v-btn>
+                <v-btn v-if="mode==='create'" @click="create">작성</v-btn>
+                <v-btn v-else @click="update">수정</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -32,6 +40,7 @@
 </template>
 
 <script>
+import '@mdi/font/css/materialdesignicons.css'
 export default {
     data(){
         return{
@@ -40,6 +49,7 @@ export default {
                 {text:'생성일',value:'createAt'},
                 {text:'제목',value:'title'},
                 {text:'내용',value:'content'},
+                {text:'action', value:'action'}
             ],
             items:[],
             dialog:false,
@@ -61,6 +71,8 @@ export default {
                 this.form.title=''
                 this.form.content=''
             }else{
+                this.form.title=sel.title
+                this.form.content=sel.content
                 this.selectItem=sel
             }
             this.dialog=true
@@ -86,6 +98,16 @@ export default {
                }
                this.items.push(item)
             })
+        },
+        async update(){
+            await this.$db.collection('board').doc(this.selectItem.id).update(this.form)
+            this.dialog=false
+            await this.read()
+        }
+        ,
+        async remove(p){
+            await this.$db.collection('board').doc(p.id).delete()
+            await this.read()
         }
     }
 }
