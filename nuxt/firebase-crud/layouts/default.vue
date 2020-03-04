@@ -48,6 +48,11 @@
       >
         <v-icon>mdi-minus</v-icon>
       </v-btn>
+      <v-btn icon @click="sighOut">
+        <v-icon>
+          mdi-logout
+        </v-icon>
+      </v-btn>
       <v-toolbar-title>
         {{ _.get($store.state.user,'email','이메일 없음')}}
       </v-toolbar-title>
@@ -113,6 +118,12 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js'
+    }
+  },
+  methods:{
+    async sighOut(){
+      await this.$auth.signOut()
+      this.$router.push('/auth/signIn')
     }
   }
 }
