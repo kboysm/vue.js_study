@@ -58,16 +58,7 @@ export default {
     }
   },
   mounted() {
-      //event hook
-      this.$auth.onAuthStateChanged(function(user) {
-        if (user) {
-            // User is signed in.
-            console.log('user ok')
-        } else {
-            // No user is signed in.
-            console.log('user null')
-        }
-        });
+      
   },
   methods: {
     async signUp() {
@@ -124,7 +115,7 @@ export default {
     },
     async reqNomal(){
         const tk =await this.$auth.currentUser.getIdToken(/* forceRefresh */ true)
-        this.$axios.setToken(tk)
+        this.$axios.setToken('Bearer '+tk)
         const data =await this.$axios.get('http://localhost:5000/lsm-first-functions/us-central1/Widget')
         console.log(data)
     }

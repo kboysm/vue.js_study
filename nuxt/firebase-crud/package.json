@@ -9,7 +9,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "firebase:functions":"firebase serve --only functions"
+    "firebase:functions": "firebase serve --only functions"
   },
   "dependencies": {
     "@mdi/font": "^4.9.95",
@@ -17,6 +17,7 @@
     "core-js": "2.6.5",
     "dotenv": "^8.2.0",
     "firebase": "^7.9.3",
+    "lodash": "^4.17.15",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {

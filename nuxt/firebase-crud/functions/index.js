@@ -13,8 +13,7 @@ admin.initializeApp(functions.config().firebase)
 const app = express()
 
 const verifyToken = async (req, res, next) => {
-    console.log(JSON.stringify(req.headers))
-    const tk = req.headers.authorization
+    const tk = req.headers.authorization.split(' ')[1]
     const u = await admin.auth().verifyIdToken(tk)
     console.log(u)
     next()
