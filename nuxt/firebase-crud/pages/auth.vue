@@ -36,6 +36,12 @@
       <v-btn @click="signIn">
         signIn
       </v-btn>
+      <v-btn @click="getToken">
+        getToken
+      </v-btn>
+      <v-btn @click="reqNomal">
+        req
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -110,10 +116,18 @@ export default {
         console.error(e.message)
       }
     },
-    getUser(){
-        const u = this.$auth.currentUser
-        this.msg=JSON.stringify(u)
+    
+    async getToken(){
+        const tk =await this.$auth.currentUser.getIdToken(/* forceRefresh */ true)
+        console.log(tk)
+        this.msg=tk
     },
+    async reqNomal(){
+        const tk =await this.$auth.currentUser.getIdToken(/* forceRefresh */ true)
+        this.$axios.setToken(tk)
+        const data =await this.$axios.get('http://localhost:5000/lsm-first-functions/us-central1/Widget')
+        console.log(data)
+    }
   }
 }
 </script>
