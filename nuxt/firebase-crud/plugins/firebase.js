@@ -1,5 +1,6 @@
-import firebase from 'firebase/app'
+import * as firebase from "firebase/app"
 import 'firebase/firestore'
+import 'firebase/auth'
 import Vue from 'vue'
 if(!firebase.apps.length){
 firebase.initializeApp({
@@ -9,4 +10,5 @@ firebase.initializeApp({
   });
 
   Vue.prototype.$db = firebase.firestore();
+  Vue.prototype.$auth = firebase.auth();
 }
