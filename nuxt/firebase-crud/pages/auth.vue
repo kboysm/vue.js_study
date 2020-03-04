@@ -15,11 +15,26 @@
       </v-form>
     </v-card-text>
     <v-card-text>
-      {{ msg }}
+      <v-textarea
+      v-model="msg"
+      >
+      </v-textarea>
     </v-card-text>
     <v-card-actions>
       <v-btn @click="signUp">
         signUp
+      </v-btn>
+      <v-btn @click="getUser">
+        getUser
+      </v-btn>
+      <v-btn @click="setUser">
+        setUser
+      </v-btn>
+      <v-btn @click="sighOut">
+        sighOut
+      </v-btn>
+      <v-btn @click="signIn">
+        signIn
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -36,7 +51,18 @@ export default {
       msg: ''
     }
   },
-  mounted() {},
+  mounted() {
+      //event hook
+      this.$auth.onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+            console.log('user ok')
+        } else {
+            // No user is signed in.
+            console.log('user null')
+        }
+        });
+  },
   methods: {
     async signUp() {
       try {
@@ -48,7 +74,46 @@ export default {
       } catch (e) {
         console.error(e.message)
       }
-    }
+    },
+    getUser(){
+        const u = this.$auth.currentUser
+        this.msg=JSON.stringify(u)
+    },
+    async setUser(){
+        const u = this.$auth.currentUser
+        try{
+            const r = await u.updateProfile({
+                displayName:this.form.email
+            })
+            console.log(r)
+        }catch(e){
+            console.error(e.message)
+        }
+
+    },
+    async sighOut(){
+        try{
+            const r =await this.$auth.signOut()
+            console.log(r)
+        }catch(e){
+            console.error(e.message)
+        }
+    },
+    async signIn() {
+      try {
+        const r = await this.$auth.signInWithEmailAndPassword(
+          this.form.email,
+          this.form.password
+        )
+        console.log(r)
+      } catch (e) {
+        console.error(e.message)
+      }
+    },
+    getUser(){
+        const u = this.$auth.currentUser
+        this.msg=JSON.stringify(u)
+    },
   }
 }
 </script>
