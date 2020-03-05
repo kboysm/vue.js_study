@@ -32,17 +32,27 @@ export default {
       msg: ''
     }
   },
-  mounted() {
-      
+  async mounted() { //먼저 검증 절차를 진행
+    await this.$recaptcha.init()
   },
   methods: {
    
     async signIn() {
       try {
-        const r = await this.$auth.signInWithEmailAndPassword(
-          this.form.email,
-          this.form.password
-        )
+        const token = await this.$recaptcha.execute('login')
+        console.log('ReCaptcha token:', token)
+        if(!token) return false
+        // const r = await this.$auth.signInWithEmailAndPassword(
+        //   this.form.email,
+        //   this.form.password
+        // )
+
+        const r = this.$axios.post('https://us-central1-lsm-first-functions.cloudfunctions.net/auth/signin',{
+          email:this.form.email,
+          password:this.form.password,
+          token:token
+        })
+
         this.$router.push('/')
         console.log(r)
       } catch (e) {

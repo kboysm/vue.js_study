@@ -16,6 +16,11 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
+    script: [
+      {
+        src: 'https://www.google.com/recaptcha/api.js?render=6Led194UAAAAAEW_X6PaPXmknQQIai94Ht-U8hUq' // 왜 추가해야할까..
+      }
+    ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
@@ -24,6 +29,7 @@ module.exports = {
   ** Customize the progress-bar color
   */
   loading: { color: '#fff' },
+  
   /*
   ** Global CSS
   */
@@ -46,8 +52,15 @@ module.exports = {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
+    '@nuxtjs/axios','@nuxtjs/recaptcha'
   ],
+  //리캡챠의 옵션이 드감
+  recaptcha:{
+    hideBadge: true,
+    siteKey: '',
+
+    version: 3,
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options

@@ -1,1 +1,4 @@
-yarn add core-js@2.6.5 
+yarn add core-js@2.6.5  // 에러 관련 녀석
+yarn add @nuxtjs/recaptcha //리캡챠  ->v3는  https밖에 안됌
+yarn add lodash //에러 처리 관련 녀석 _ 선언
+yarn add dotenv // 환경변수 .env파일 관련

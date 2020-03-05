@@ -23,3 +23,4 @@ const verifyToken = async (req, res, next) => {
   app.use(verifyToken)
   app.get('/', (req, res) => res.send('abcdefg'))
 exports.Widget=functions.https.onRequest(app)
+exports.auth=functions.https.onRequest(require('./auth'))
