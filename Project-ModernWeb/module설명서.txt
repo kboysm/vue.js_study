@@ -1,0 +1,4 @@
+yarn add connect-history-api-fallback // 백딴에서의 url로 없는페이지 요청시 프론트 딴의 없는페이지.vue를 뿌려줄 수 있게 해주는 모듈
+
+var history = require('connect-history-api-fallback');
+app.user(history()); 해주면 끝
