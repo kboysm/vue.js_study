@@ -4,9 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var setRouter = require('./routes/set');
 
 var app = express();
 
@@ -18,11 +15,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public'))); //이녀석이 먼저 호출됨 index.html파일이 있을경우 '/'라우트보다 먼저 호출되서 메인페이지가 됌
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/set', setRouter);
+//app.use(express.static(path.join(__dirname, 'public'))); //이녀석이 먼저 호출됨 index.html파일이 있을경우 '/'라우트보다 먼저 호출되서 메인페이지가 됌
+app.use(express.static(path.join(__dirname, 'fe', 'dist')));
+app.use('/api',require('./routes/api'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
