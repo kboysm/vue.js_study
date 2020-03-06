@@ -22,7 +22,8 @@
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>Mode--> {{title }} (===) Path-->{{ $apiRootPath }}</v-toolbar-title>
+      
     </v-app-bar>
 
     <v-content>
@@ -43,6 +44,7 @@
       source: String,
     },
     data: () => ({
+      title:process.env.NODE_ENV,
       drawer: null,
       items:[
         {icon:'mdi-home',

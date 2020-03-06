@@ -2,3 +2,5 @@ yarn add connect-history-api-fallback // 백딴에서의 url로 없는페이지 
 
 var history = require('connect-history-api-fallback');
 app.user(history()); 해주면 끝
+
+npm install -g win-node-env //최상단 be ,fe를 담고있는 폴더의 package.json 파일의 script 부분 dev,pr을 수행하려는데 명령이 안먹음 , 그걸 해결하는 모듈

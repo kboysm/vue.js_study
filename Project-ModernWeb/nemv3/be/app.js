@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors') // 상단 아무곳이나 추가
 var app = express();
-app.use(cors()) // api 위에서 사용하겠다고 선언
+if (process.env.NODE_ENV !== 'production') app.use(cors())
 
 
 app.use(logger('dev'));
