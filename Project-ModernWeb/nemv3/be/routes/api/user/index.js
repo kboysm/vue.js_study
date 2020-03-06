@@ -1,40 +1,53 @@
 var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
-
-const us = [
-  {
-    name: '김김김',
-    age: 14
-  },
-  {
-    name: '이이이',
-    age: 24
-  }
-]
+const User = require('../../../models/users');
 
 router.get('/', function(req, res, next) {
-  console.log(req.query)
-    console.log(req.body)
-
-  res.send({ users: us })
+  console.log('get요청 옴')
+ User.find()
+  .then(r => {
+    res.send({ success: true, users: r })
+  })
+  .catch(e => {
+    res.send({ success: false })
+  })
 });
 
 router.post('/', (req, res, next) => {
-  console.log(req.query)
-    console.log(req.body)
-  res.send({ success: true, msg: 'post ok' })
+  console.log(req.body)
+  const { name, age } = req.body
+  const u = new User({ name, age })
+  u.save()
+    .then(r => {
+      res.send({ success: true, msg: r })
+    })
+    .catch(e => {
+      res.send({ success: false, msg: e.message })
+    })
+})
+router.put('/:id', (req, res, next) => {
+  const id = req.params.id
+  const { name, age } = req.body
+  User.updateOne({ _id: id }, { $set: { name, age }})
+    .then(r => {
+      res.send({ success: true, msg: r })
+    })
+    .catch(e => {
+      res.send({ success: false, msg: e.message })
+    })
+  // res.send({ success: true, msg: 'put ok' })
 })
 
-router.put('/', (req, res, next) => {
-  console.log(req.query)
-    console.log(req.body)
-  res.send({ success: true, msg: 'put ok' })
-})
-
-router.delete('/', (req, res, next) => {
-  console.log(req.query)
-    console.log(req.body)
+router.delete('/:id', (req, res, next) => {
+  const id = req.params.id
+  User.deleteOne({ _id: id })
+    .then(r => {
+      res.send({ success: true, msg: r })
+    })
+    .catch(e => {
+      res.send({ success: false, msg: e.message })
+    })
   res.send({ success: true, msg: 'del ok' })
 })
 
