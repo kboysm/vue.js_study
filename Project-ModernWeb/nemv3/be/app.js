@@ -6,7 +6,7 @@ var logger = require('morgan');
 const cors = require('cors') // 상단 아무곳이나 추가
 var app = express();
 if (process.env.NODE_ENV !== 'production') app.use(cors())
-
+console.log(process.env.NODE_ENV)
 
 app.use(logger('dev'));
 app.use(express.json());
