@@ -62,6 +62,16 @@
          to: {
               path: '/user'
             }},
+        {icon:'mdi mdi-account',
+         title:'header',
+         to: {
+              path: '/header'
+            }},
+        {icon:'mdi mdi-account',
+         title:'sign',
+         to: {
+              path: '/sign'
+            }},
       ]
     }),
   }

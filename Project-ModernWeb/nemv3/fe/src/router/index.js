@@ -21,6 +21,11 @@ const routes = [
     component: () => import('../views/header.vue')
   },
   {
+    path: '/sign',
+    name: '로그인',
+    component: () => import('../views/sign.vue')
+  },
+  {
     path: '/user',
     name: 'user',
     component: () => import(/* webpackChunkName: "about" */ '../views/user.vue')

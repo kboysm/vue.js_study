@@ -13,6 +13,11 @@ router.get('/', function(req, res, next) {
 router.get('/hello', function(req, res, next) {
   res.send( { success: true ,msg:'hello'});
 });
+router.use('/sign',require('./sign'))
+router.all('*', function(req, res, next) {
+  console.log('토큰 검사 하는 미들웨어')
+  next();
+});
 
 router.use('/test',require('./test'))
 router.use('/user', require('./user'))

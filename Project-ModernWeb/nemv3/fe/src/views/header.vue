@@ -13,6 +13,10 @@ export default {
         .then(r => console.log(r))
         .catch(e => console.log(e))
     }
+  },
+  mounted () {
+      if (!window.localStorage) alert('이 브라우저는 지원되지 않습니다')
+      else  console.log(window)
   }
 }
 </script>
