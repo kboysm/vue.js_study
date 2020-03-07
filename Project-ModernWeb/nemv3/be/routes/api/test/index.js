@@ -5,7 +5,8 @@ var createError = require('http-errors'); //상단에 추가
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.send( { success: true , msg:'test api'});
+  console.log(req.headers)
+  res.send({ msg: 'hello', a: '괜찮아' })
 });
 router.get('/hello', function(req, res, next) {
   res.send( { success: true ,msg:'test hello'});
