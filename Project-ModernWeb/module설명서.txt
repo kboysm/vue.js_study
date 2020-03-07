@@ -10,3 +10,5 @@ yarn global add pm2 // 서버가 잘못된 요청으로 인하여 다운되는�
 
 pm2 install pm2-logrotate // 날짜별로 log 데이터를 관리
 ->pm2 set pm2-logrotate:retain 7 -> 7일동안 관리하라는 의미
+
+yarn add jsonwebtoken // jwt 모듈

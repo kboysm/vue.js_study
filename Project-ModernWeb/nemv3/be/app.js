@@ -34,14 +34,15 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
+const cfg = require('../config/conf')
+console.log(cfg)
 const mongoose = require('mongoose')
 // const userSchema = new mongoose.Schema({
 //   name: { type: String, default: '', unique: true, index: true },
 //   age: { type: Number, default: 1 }
 // })
 // const User = mongoose.model('User', userSchema)
-mongoose.connect('mongodb://localhost:27017/nemv',{ useUnifiedTopology: true,  useNewUrlParser: true  }, (err) => {
+mongoose.connect(cfg.dbUrl,{ useUnifiedTopology: true,  useNewUrlParser: true  }, (err) => {
    if (err) return console.error(err)
    console.log('mongoose connected!')
 //   //  User.create({ name: '하하' })
@@ -68,3 +69,13 @@ mongoose.connect('mongodb://localhost:27017/nemv',{ useUnifiedTopology: true,  u
 //    .then(r => console.log(r))
 //    .catch(e => console.error(e))
 })
+
+const jwt = require('jsonwebtoken');
+const key = 'ert789'
+const token = jwt.sign({ id: 'memi', email: '44klo@google.com' }, key);
+console.log(token +"                   zzzzzzzzzzzzzzzzzzzzzzzzzzzzz")
+
+const decoded = jwt.verify(token, key) 
+console.log(decoded) 
+// { id: 'memi', email: 'memi@xxx.com', iat: 1540876247 }
+console.log(new Date(decoded.iat * 1000).toLocaleString())
