@@ -3,18 +3,23 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import axios from 'axios'
 Vue.use(VueRouter)
+
 Vue.prototype.$axios = axios
 const apiRootPath = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000/api/' : '/api/'
 Vue.prototype.$apiRootPath = apiRootPath
+axios.defaults.baseURL = apiRootPath // add
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
 
 const pageCheck = (to, from, next) => {
   // return next()
-  axios.post(`${apiRootPath}page`, { name: to.path.replace('/', '') }, { headers: { Authorization: localStorage.getItem('token') } })
+  axios.post(`${apiRootPath}page`, { name: to.path.replace('/', '') }, { headers: { Authorization: JSON.stringify(localStorage.getItem('token')) } })
+  //JSON.stringify(localStorage.getItem('token')) 이거 꼭 해주어야함 JSON.stringgify를 안해주면 백엔드에 오브젝트 타입으로 들어가서 손님계정으로 손님권한을 부여받을 수 없음 찾는데 2시간 걸림
     .then((r) => {
-      if (!r.data.success) throw new Error(r.data.msg)
+      if (!r.data.success) { throw new Error(r.data.msg)}
       next()
     })
     .catch((e) => {
+  
       // console.error(e.message)
       next(`/block/${e.message}`)
     })
@@ -75,12 +80,12 @@ const routes = [
   {
     path: '/page',
     name: '페이지',
-    component: () => import('../views/page')
+    component: () => import('../views/page'),beforeEnter: pageCheck
   },  
   {
     path: '/user',
     name: 'user',
-    component: () => import(/* webpackChunkName: "about" */ '../views/user.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/user.vue'),beforeEnter: pageCheck
   },
   {
     path: '*',
