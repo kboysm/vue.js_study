@@ -16,9 +16,20 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    path: '/block',
+    name: '차단',
+    component: () => import('../views/block')
+  },
+  {
     path: '/header',
     name: '헤더',
-    component: () => import('../views/header.vue')
+    component: () => import('../views/header.vue'),
+    beforeEnter: (to, from, next) => {
+      // console.log(to)
+      // console.log(from)
+      if (!localStorage.getItem('token')) return next('block')
+      next()
+    }
   },
   {
     path: '/sign',

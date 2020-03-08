@@ -23,6 +23,26 @@
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Mode--> {{title }} (===) Path-->{{ $apiRootPath }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+       <v-menu
+        left
+        bottom
+      >
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+         <v-list>
+            <v-list-item @click="$router.push('sign')">
+              <v-list-item-title>로그인</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="signOut">
+              <v-list-item-title>로그아웃</v-list-item-title>
+            </v-list-item>
+          </v-list>
+      </v-menu>
       
     </v-app-bar>
 
@@ -74,5 +94,11 @@
             }},
       ]
     }),
+    methods: {
+      signOut () {
+      localStorage.removeItem('token')
+      this.$router.push('/')
+    }
+    },
   }
 </script>
