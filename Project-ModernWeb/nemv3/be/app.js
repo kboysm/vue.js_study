@@ -70,12 +70,12 @@ mongoose.connect(cfg.dbUrl,{ useUnifiedTopology: true,  useNewUrlParser: true  }
 //    .catch(e => console.error(e))
 })
 
-const jwt = require('jsonwebtoken');
-const key = 'ert789'
-const token = jwt.sign({ id: 'memi', email: '44klo@google.com' }, key);
-console.log(token +"                   zzzzzzzzzzzzzzzzzzzzzzzzzzzzz")
+// const jwt = require('jsonwebtoken');
+// const key = 'ert789'
+// const token = jwt.sign({ id: 'LSM', email: '44klo@google.com' }, key);
+// console.log(token +"                   zzzzzzzzzzzzzzzzzzzzzzzzzzzzz")
 
-const decoded = jwt.verify(token, key) 
-console.log(decoded) 
-// { id: 'memi', email: 'memi@xxx.com', iat: 1540876247 }
-console.log(new Date(decoded.iat * 1000).toLocaleString())
+// const decoded = jwt.verify(token, key) 
+// console.log(decoded) 
+// // { id: 'memi', email: 'memi@xxx.com', iat: 1540876247 }
+// console.log(new Date(decoded.iat * 1000).toLocaleString())

@@ -6,4 +6,5 @@ module.exports = {
     pwd: '1234',
     name: '관리자'
   },
+  secretKey: 'abcdefg'
 }
