@@ -1,7 +1,7 @@
 var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
-const User = require('../../../models/users')
+const User = require('../../../../models/users')
 
 router.get('/', function(req, res, next) {
   User.find()

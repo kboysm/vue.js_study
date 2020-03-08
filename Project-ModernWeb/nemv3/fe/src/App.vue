@@ -68,31 +68,46 @@
       title:process.env.NODE_ENV,
       drawer: null,
       items:[
-        {icon:'mdi-home',
-         title:'Home',
-        to: {
-              path: '/'
-            }},
-        {icon:'mdi-contact-mail',
-         title:'about',
-         to: {
-              path: '/about'
-            }},
+        {
+          icon: 'mdi-home',
+          title: 'lv0',
+          to: {
+            path: '/'
+          }
+        },
+        {
+          icon: 'mdi-home',
+          title: 'lv1',
+          to: {
+            path: '/lv1'
+          }
+        },
+        {
+          icon: 'mdi-home',
+          title: 'lv2',
+          to: {
+            path: '/lv2'
+          }
+        },
+        {
+          icon: 'mdi-home',
+          title: 'lv3',
+          to: {
+            path: '/lv3'
+          }
+        },
         {icon:'mdi mdi-account',
-         title:'user',
+         title:'사용자 관리',
          to: {
               path: '/user'
             }},
-        {icon:'mdi mdi-account',
-         title:'header',
-         to: {
-              path: '/header'
-            }},
-        {icon:'mdi mdi-account',
-         title:'sign',
-         to: {
-              path: '/sign'
-            }},
+        {
+          icon: 'face',
+          title: '페이지관리',
+          to: {
+            path: '/page'
+          }
+        }
       ]
     }),
     methods: {

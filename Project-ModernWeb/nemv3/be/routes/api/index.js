@@ -3,10 +3,14 @@ const jwt = require('jsonwebtoken');
 const cfg = require('../../../config/conf')
 var router = express.Router();
 var createError = require('http-errors'); //상단에 추가
+
 router.use('/sign', require('./sign'))
+router.use('/manage', require('./manage'))
 
 const verifyToken = (t) => {
   return new Promise((resolve, reject) => {
+    if(!t) resolve({id:'guest', name:'손님', lv:3})
+    if(t.length <10) resolve({id: 'guest', name:'손님', lv:3})
     jwt.verify(t, cfg.secretKey, (err, v) => {
       if (err) reject(err)
       resolve(v)
@@ -18,17 +22,18 @@ router.all('*', function(req, res, next) {
   const token = req.headers.authorization
   verifyToken(token)
     .then(v => {
-      console.log(v)
+      req.user =v
       next()
     })
     .catch(e => res.send({ success: false, msg: e.message }))  
 });
-
-router.all('*', function(req, res, next) {  //미들웨어
-  if (req.path === '/xxx') return res.send({ msg: '보안상 여긴 못와요!' })
+router.use('/page', require('./page'))
+router.all('*', function(req, res, next) {
+  // 또 검사해도 됨
+  if (req.user.lv > 2) return res.send({ success: false, msg: '권한이 없습니다.' })
   next()
-});
-/* GET home page. */
+})
+
 router.get('/', function(req, res, next) {
   res.send( { success: true ,msg:'/api'});
 });

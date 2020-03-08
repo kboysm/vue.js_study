@@ -1,12 +1,12 @@
 var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
-const User = require('../../../models/users')
+const Page = require('../../../../models/pages')
 
 router.get('/', function(req, res, next) {
-  User.find()
+  Page.find()
     .then(r => {
-      res.send({ success: true, users: r })
+      res.send({ success: true, pages: r })
     })
     .catch(e => {
       res.send({ success: false })
@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 
 router.put('/:_id', (req, res, next) => {
   const _id = req.params._id
-  User.updateOne({ _id }, { $set: req.body})
+  Page.updateOne({ _id }, { $set: req.body})
     .then(r => {
       res.send({ success: true, msg: r })
     })
@@ -26,7 +26,7 @@ router.put('/:_id', (req, res, next) => {
 
 router.delete('/:_id', (req, res, next) => {
   const _id = req.params._id
-  User.deleteOne({ _id })
+  Page.deleteOne({ _id })
     .then(r => {
       res.send({ success: true, msg: r })
     })
