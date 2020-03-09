@@ -6,7 +6,7 @@ var createError = require('http-errors'); //상단에 추가
 
 router.use('/sign', require('./sign'))
 router.use('/site', require('./site'))
-
+router.use('/register', require('./register'))
 
 const verifyToken = (t) => {
   return new Promise((resolve, reject) => {
