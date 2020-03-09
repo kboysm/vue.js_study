@@ -8,11 +8,34 @@ Vue.prototype.$axios = axios
 const apiRootPath = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000/api/' : '/api/'
 Vue.prototype.$apiRootPath = apiRootPath
 axios.defaults.baseURL = apiRootPath // add
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+ //axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  config.headers.Authorization = localStorage.getItem('token')
+  return config;
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error);
+});
+
+
+axios.interceptors.response.use(response=> {
+  // if(response.data.token){
+  //   localStorage.setItem('token', response.data.token)
+  //   this.$store.commit('getToken')
+  // }
+  return response;
+}, function (error) {
+
+  return Promise.reject(error);
+});
+
 
 const pageCheck = (to, from, next) => {
   // return next()
-  axios.post(`${apiRootPath}page`, { name: to.path.replace('/', '') }, { headers: { Authorization: JSON.stringify(localStorage.getItem('token')) } })
+  axios.post(`${apiRootPath}page`, { name: to.path.replace('/', ''), headers: { Authorization: localStorage.getItem('token') } })
   //JSON.stringify(localStorage.getItem('token')) 이거 꼭 해주어야함 JSON.stringgify를 안해주면 백엔드에 오브젝트 타입으로 들어가서 손님계정으로 손님권한을 부여받을 수 없음 찾는데 2시간 걸림
     .then((r) => {
       if (!r.data.success) { throw new Error(r.data.msg)}

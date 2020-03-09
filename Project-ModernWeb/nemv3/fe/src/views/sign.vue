@@ -40,9 +40,9 @@ export default {
       axios.post(`sign/in`, this.form)
         .then(r => {
           if (!r.data.success) return console.error(r.data.msg)
-          localStorage.setItem('token', r.data.token)
-          this.$store.commit('getToken')
-          this.$router.push('/header')         
+            localStorage.setItem('token', r.data.token)
+            this.$store.commit('getToken')
+            this.$router.push('/header')         
         })
         .catch(e => console.error(e.message))
     }

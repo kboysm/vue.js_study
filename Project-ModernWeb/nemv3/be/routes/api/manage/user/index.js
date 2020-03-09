@@ -4,6 +4,7 @@ var router = express.Router();
 const User = require('../../../../models/users')
 
 router.get('/', function(req, res, next) {
+  console.log('manage/user/index')
   User.find()
     .then(r => {
       res.send({ success: true, users: r })

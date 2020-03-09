@@ -11,7 +11,7 @@ router.use('/manage', require('./manage'))
 const verifyToken = (t) => {
   return new Promise((resolve, reject) => {
     if(!t) resolve({id:'guest', name:'손님', lv:3})
-    if((typeof t)==='String') reject(new Error('문자가 아닌 토큰입니다.'))
+    if((typeof t) !=='string') reject(new Error('문자가 아닌 토큰입니다.'))
     if(t.length <10) resolve({id: 'guest', name:'손님', lv:3})
     jwt.verify(t, cfg.secretKey, (err, v) => {
       if (err) reject(err)
@@ -21,7 +21,6 @@ const verifyToken = (t) => {
 }
 router.all('*', function(req, res, next) {
   // 토큰 검사
-  console.log(req.headers)
   const token = req.headers.authorization
   verifyToken(token)
     .then(v => {
