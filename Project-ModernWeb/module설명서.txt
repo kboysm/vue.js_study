@@ -12,3 +12,5 @@ pm2 install pm2-logrotate // 날짜별로 log 데이터를 관리
 ->pm2 set pm2-logrotate:retain 7 -> 7일동안 관리하라는 의미
 
 yarn add jsonwebtoken // jwt 모듈
+
+ yarn add vee-validate // 유효성 검사 frontend 모듈로 설치

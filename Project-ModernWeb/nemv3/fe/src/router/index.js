@@ -70,6 +70,11 @@ const routes = [
     component: () => import('../views/lv3'),beforeEnter: pageCheck
   },
   {
+    path: '/register',
+    name: '회원가입',
+    component: () => import('../views/register')
+  },
+  {
     path: '/',
     name: 'Home',
     component: Home
