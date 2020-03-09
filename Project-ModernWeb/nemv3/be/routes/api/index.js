@@ -5,7 +5,7 @@ var router = express.Router();
 var createError = require('http-errors'); //상단에 추가
 
 router.use('/sign', require('./sign'))
-router.use('/manage', require('./manage'))
+router.use('/site', require('./site'))
 
 
 const verifyToken = (t) => {
@@ -23,13 +23,14 @@ router.all('*', function(req, res, next) {
   // 토큰 검사
   const token = req.headers.authorization
   verifyToken(token)
-    .then(v => {
-      req.user =v
-      next()
-    })
-    .catch(e =>{
-     res.send({ success: false, msg: e.message })})  
-});
+  .then(v => {
+    req.user =v
+    next()
+  })
+  .catch(e =>{
+    res.send({ success: false, msg: e.message })})  
+  });
+  router.use('/manage', require('./manage'))
 router.use('/page', require('./page'))
 router.all('*', function(req, res, next) {
   // 또 검사해도 됨

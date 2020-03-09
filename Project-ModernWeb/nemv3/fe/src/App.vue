@@ -22,7 +22,7 @@
       dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Mode--> {{title }} (===) Path-->{{ $apiRootPath }}</v-toolbar-title>
+      <v-toolbar-title v-text="siteTitle"></v-toolbar-title>
       <v-spacer></v-spacer>
        <v-menu
         left
@@ -53,7 +53,7 @@
       color="indigo"
       app
     >
-      <span class="white--text">&copy; 2019</span>
+      <span>{{siteCopyright}}</span>
     </v-footer>
   </v-app>
 </template>
@@ -63,10 +63,15 @@
     props: {
       source: String,
     },
-    
+    mounted() {
+      this.getSite()
+    },
     data: () => ({
       title:process.env.NODE_ENV,
       drawer: null,
+      siteTitle: '기다리는중',
+      siteCopyright: '기다리는중',
+      siteDark: false,
       items:[
         {
           icon: 'mdi-home',
@@ -102,10 +107,17 @@
               path: '/user'
             }},
         {
-          icon: 'face',
+          icon: 'mdi mdi-message-draw',
           title: '페이지관리',
           to: {
             path: '/page'
+          }
+        },
+        {
+          icon: 'mdi mdi-message-image',
+          title: '사이트관리',
+          to: {
+            path: '/site'
           }
         }
       ]
@@ -115,6 +127,16 @@
       // localStorage.removeItem('token')
       this.$store.commit('delToken')
       this.$router.push('/')
+      },
+      getSite () {
+      this.$axios.get('/site')
+        .then(r => {
+          this.siteTitle = r.data.d.title
+          this.siteCopyright = r.data.d.copyright
+           if(r.data.d.dark) this.$vuetify.theme.dark = true
+           else this.$vuetify.theme.dark = false
+        })
+        .catch(e => console.error(e.message))
     }
     },
   }

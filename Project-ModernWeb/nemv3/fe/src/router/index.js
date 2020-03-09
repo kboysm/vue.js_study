@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import axios from 'axios'
+
 Vue.use(VueRouter)
 
 Vue.prototype.$axios = axios
@@ -24,7 +25,6 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(response=> {
   // if(response.data.token){
   //   localStorage.setItem('token', response.data.token)
-  //   this.$store.commit('getToken')
   // }
   return response;
 }, function (error) {
@@ -73,6 +73,12 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/site',
+    name: '사이트',
+    component: () => import('../views/site'),
+    beforeEnter: pageCheck
   },
   {
     path: '/about',
