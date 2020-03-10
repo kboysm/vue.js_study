@@ -10,10 +10,31 @@
       <div>나이: {{user.age}}</div>
       <div>로그인 횟수: {{user.inCnt}}</div>
     </v-card-text>
+    <v-card-actions>
+      <v-btn color="primary" @click="children">자식용</v-btn>
+      <v-btn color="warning" @click="parent">부모용</v-btn>
+    </v-card-actions>
+    <v-card-text v-if="va">
+      <v-alert v-model="va" dismissible>자식 혼자 떠들기</v-alert>
+    </v-card-text>
   </v-card>
 </template>
 <script>
 export default {
-  props: [ 'user' ]
+  props: [ 'user' ],
+  data () {
+    return {
+      va: false,
+    }
+  },
+  methods: {
+    children () {
+      this.user.name = 'xxx'
+      this.va = true
+    },
+    parent () {
+      this.$emit('sbOpen', '부모에게 알림')
+    }
+  }
 }
 </script>
