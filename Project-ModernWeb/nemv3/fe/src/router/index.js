@@ -122,6 +122,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/user.vue'),beforeEnter: pageCheck
   },
   {
+    path: '/users',
+    name: 'users',
+    component: () => import(/* webpackChunkName: "about" */ '../views/users.vue')
+  },
+  {
     path: '*',
     name: 'e404',
     component: () => import('../views/e404')
