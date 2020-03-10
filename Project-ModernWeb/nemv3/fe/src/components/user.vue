@@ -1,16 +1,19 @@
 <template>
   <v-card>
     <v-card-title primary-title>
-      <h3 class="headline mb-0">{{str}}</h3>
+      <h3 class="headline mb-0">{{user.id}}</h3>
     </v-card-title>
-    
-    <v-card-title primary-title>
-      <h3 class="headline mb-0">{{obj.a}}</h3>
-    </v-card-title>
+    <v-divider light></v-divider>
+    <v-card-text>
+      <div>이름: {{user.name}}</div>
+      <div>권한: {{user.lv}}</div>
+      <div>나이: {{user.age}}</div>
+      <div>로그인 횟수: {{user.inCnt}}</div>
+    </v-card-text>
   </v-card>
 </template>
 <script>
 export default {
-  props: [ 'str', 'obj' ]
+  props: [ 'user' ]
 }
 </script>
