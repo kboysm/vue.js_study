@@ -11,6 +11,10 @@
             <v-form>
               <v-text-field prepend-icon="mdi-email" v-model="form.id" label="아이디" type="text"></v-text-field>
               <v-text-field prepend-icon="mdi-account-key" v-model="form.pwd" label="비밀번호" type="password"></v-text-field>
+              <v-checkbox
+                v-model="form.remember"
+                label="암호 기억하기(최대 7일간 보관 됩니다.)"
+              ></v-checkbox>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -31,7 +35,8 @@ export default {
     return {
       form: {
         id: '',
-        pwd: ''
+        pwd: '',
+        remember: false
       }
     }
   },
