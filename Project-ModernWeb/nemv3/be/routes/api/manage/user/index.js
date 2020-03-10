@@ -4,8 +4,7 @@ var router = express.Router();
 const User = require('../../../../models/users')
 
 router.get('/', function(req, res, next) {
-  console.log('manage/user/index')
-  User.find()
+  User.find().select('-pwd') //pwd만 빼고 다 찾음 
     .then(r => {
       res.send({ success: true, users: r })
     })
