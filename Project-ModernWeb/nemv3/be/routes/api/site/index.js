@@ -6,7 +6,7 @@ const Site = require('../../../models/sites')
   // return res.send({ success: true, d: req.user })
   Site.findOne({})
     .then(r => {
-      res.send({ success: true, d: r })
+      res.send({ success: true, d: r ,token:req.token})
     })
     .catch(e => {
       res.send({ success: false })

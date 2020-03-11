@@ -23,9 +23,9 @@ axios.interceptors.request.use(function (config) {
 
 
 axios.interceptors.response.use(response=> {
-  // if(response.data.token){
-  //   localStorage.setItem('token', response.data.token)
-  // }
+  const token = response.data.token
+  console.log(token)
+  if(token) localStorage.setItem('token',token)
   return response;
 }, function (error) {
 

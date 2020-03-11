@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
       return User.updateOne({ _id: r._id }, { $set: { pwd } })
     })
     .then((r) => {
-      res.send({ success: true })
+      res.send({ success: true ,token:req.token})
     })
     .catch((e) => {
       res.send({ success: false, msg: e.message })
