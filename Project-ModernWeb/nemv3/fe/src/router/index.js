@@ -50,6 +50,12 @@ const pageCheck = (to, from, next) => {
 
 const routes = [
   {
+    path: '/manage/boards',
+    name: 'manageBoards',
+    component: () => import('../views/manage/boards'),
+    beforeEnter: pageCheck
+  },
+  {
     path: '/',
     name: 'lv0',
     component: () => import('../views/lv0'),beforeEnter: pageCheck

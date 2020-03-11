@@ -79,6 +79,13 @@
       siteDark: false,
       items:[
         {
+          icon: 'mdi mdi-clipboard-outline',
+          title: '게시판관리',
+          to: {
+            path: '/manage/boards'
+          }
+        },
+        {
           icon: 'mdi-home',
           title: 'lv0',
           to: {
