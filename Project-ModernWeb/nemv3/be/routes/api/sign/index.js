@@ -4,7 +4,7 @@ var router = express.Router();
 const jwt = require('jsonwebtoken')
 const cfg = require('../../../../config/conf')
 const User = require('../../../models/users')
-
+const crypto = require('crypto')
 const signToken = (id, lv, name, rmb) => {
   return new Promise((resolve, reject) => {
     const o = {

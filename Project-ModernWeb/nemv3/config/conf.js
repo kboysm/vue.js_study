@@ -7,6 +7,7 @@ module.exports = {
     name: '관리자'
   },
   jwt: {
+    subject:'LSM_Token',
     secretKey: 'abcdefg',
     issuer: 'xxx.com',
     algorithm: 'HS256',    
