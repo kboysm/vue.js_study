@@ -34,7 +34,7 @@
               <v-flex xs12 sm6 md4>
                 <v-text-field
                   label="게시판 이름"
-                  hint="당구모임"
+                  hint="코딩모임"
                   persistent-hint
                   required
                   v-model="form.name"
@@ -43,7 +43,7 @@
               <v-flex xs12 sm6>
                 <v-text-field
                   label="게시판 설명"
-                  hint="당구를 좋아하는 사람"
+                  hint="코딩을 좋아하는 사람"
                   persistent-hint
                   required
                   v-model="form.rmk"
