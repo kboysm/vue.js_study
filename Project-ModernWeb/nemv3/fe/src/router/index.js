@@ -56,24 +56,24 @@ const routes = [
     beforeEnter: pageCheck
   },
   {
-    path: '/',
+    path: '/lv0',
     name: 'lv0',
-    component: () => import('../views/lv0'),beforeEnter: pageCheck
+    component: () => import('../views/test/lv0'),beforeEnter: pageCheck
   },
   {
     path: '/lv1',
     name: 'lv1',
-    component: () => import('../views/lv1'),beforeEnter: pageCheck
+    component: () => import('../views/test/lv1'),beforeEnter: pageCheck
   },
   {
     path: '/lv2',
     name: 'lv2',
-    component: () => import('../views/lv2'),beforeEnter: pageCheck
+    component: () => import('../views/test/lv2'),beforeEnter: pageCheck
   },
   {
     path: '/lv3',
     name: 'lv3',
-    component: () => import('../views/lv3'),beforeEnter: pageCheck
+    component: () => import('../views/test/lv3'),beforeEnter: pageCheck
   },
   {
     path: '/register',
@@ -88,7 +88,7 @@ const routes = [
   {
     path: '/site',
     name: '사이트',
-    component: () => import('../views/site'),
+    component: () => import('../views/manage/sites'),
     beforeEnter: pageCheck
   },
   {
@@ -120,17 +120,12 @@ const routes = [
   {
     path: '/page',
     name: '페이지',
-    component: () => import('../views/page'),beforeEnter: pageCheck
+    component: () => import('../views/manage/pages'),beforeEnter: pageCheck
   },  
   {
     path: '/user',
     name: 'user',
-    component: () => import(/* webpackChunkName: "about" */ '../views/user.vue'),beforeEnter: pageCheck
-  },
-  {
-    path: '/users',
-    name: 'users',
-    component: () => import(/* webpackChunkName: "about" */ '../views/users.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/manage/user.vue'),beforeEnter: pageCheck
   },
   {
     path: '*',
