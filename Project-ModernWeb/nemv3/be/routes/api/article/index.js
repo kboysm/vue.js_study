@@ -37,13 +37,12 @@ router.post('/:_board',(req,res,next)=>{
 
 router.get('/:_board',(req,res,next)=>{
     const _board = req.params._board
-
     const f = {}
     if (_board) f._board = _board
 
-    Article.find({_board}).populate('_user','-pwd')
+    Article.find(f).populate('_user','-pwd')
     .then(rs =>{
-        res.send({ success: true, d: rs, token: req.token })
+        res.send({ success: true, ds: rs, token: req.token })
 
     })
     .catch(e => {
