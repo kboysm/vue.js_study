@@ -8,7 +8,7 @@ router.use('/sign', require('./sign'))
 router.use('/site', require('./site'))
 router.use('/register', require('./register'))
 
-const signToken = (id, lv, name, exp) => {
+const signToken = (_id,id, lv, name, exp) => {
   return new Promise((resolve, reject) => {
     const o = {
       issuer: cfg.jwt.issuer,
@@ -17,7 +17,7 @@ const signToken = (id, lv, name, exp) => {
       algorithm: cfg.jwt.algorithm,
       expiresIn: exp
     }
-    jwt.sign({ id, lv, name }, cfg.jwt.secretKey, o, (err, token) => {
+    jwt.sign({_id, id, lv, name }, cfg.jwt.secretKey, o, (err, token) => {
       if (err) reject(err)
       resolve(token)
     })
@@ -45,7 +45,7 @@ const getToken = async(t) => {
   const expSec = (vt.exp - vt.iat)
   if (diff > expSec / cfg.jwt.expiresInDiv) return { user: vt, token: null }
 
-  const nt = await signToken(vt.id, vt.lv, vt.name, expSec)
+  const nt = await signToken(vt._id,vt.id, vt.lv, vt.name, expSec)
   vt = await verifyToken(nt)
   return { user: vt, token: nt }
 }
@@ -64,6 +64,7 @@ router.all('*', function(req, res, next) {
 
 router.use('/manage', require('./manage'))
 router.use('/page', require('./page'))
+router.use('/article', require('./article')) // add
 router.use('/board', require('./board')) // add
 router.all('*', function(req, res, next) {
   // 또 검사해도 됨
