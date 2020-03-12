@@ -5,8 +5,9 @@ const Board = require('../../../models/boards')
 
 router.get('/:name',(req,res,next)=>{
   const name = req.params.name
-  Board.findOne({nema})
+  Board.findOne({name})
     .then(r=>{
+      console.log(r)
       res.send({ success: true, d: r, token: req.token })
     })
     .catch(e => {

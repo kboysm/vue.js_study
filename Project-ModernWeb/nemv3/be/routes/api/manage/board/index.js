@@ -15,7 +15,6 @@ router.post('/', (req, res, next) => {
 })
 
 router.get('/', function(req, res, next) {
-  console.log('여기')
   Board.find()
     .then(rs => {
       res.send({ success: true, ds: rs, token: req.token })
