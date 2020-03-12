@@ -15,8 +15,8 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title>Application</v-list-item-title>
-              <v-list-item-subtitle>Subtext</v-list-item-subtitle>
+              <v-list-item-title>못생겼지롱</v-list-item-title>
+              <v-list-item-subtitle>랜덤얼굴</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
@@ -40,8 +40,8 @@
           :key="subItem.title"
            :to='subItem.to'
         >
-          <v-list-item-content  :to='item.to'>
-            <v-list-item-title v-text="subItem.title"></v-list-item-title>
+          <v-list-item-content :to='item.to' >
+            <v-list-item-title  v-text="subItem.title"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-group>
@@ -112,6 +112,20 @@
       siteCopyright: '기다리는중',
       siteDark: false,
       items:[
+            {
+          icon: 'mdi mdi-comment-outline',
+          title: '끄적끄적',
+          act: true,
+          subItem: [
+            {
+              icon: 'mdi mdi-checkbox-blank-outline',
+              title: '아무나',
+              to: {
+                path: '/'
+              }
+            }
+          ]
+        },
         {
           icon: 'mdi mdi-clipboard-outline',
           title: '권한테스트',

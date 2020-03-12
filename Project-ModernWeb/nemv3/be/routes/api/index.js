@@ -7,21 +7,23 @@ var moment = require('moment')
 router.use('/sign', require('./sign'))
 router.use('/site', require('./site'))
 router.use('/register', require('./register'))
-const signToken = (id, lv, name, rmb) => {
+
+const signToken = (id, lv, name, exp) => {
   return new Promise((resolve, reject) => {
     const o = {
       issuer: cfg.jwt.issuer,
       subject: cfg.jwt.subject,
       expiresIn: cfg.jwt.expiresIn, // 3분
-      algorithm: cfg.jwt.algorithm
+      algorithm: cfg.jwt.algorithm,
+      expiresIn: exp
     }
-    if (rmb) o.expiresIn = cfg.jwt.expiresInRemember // 6일
-    jwt.sign({ id, lv, name, rmb }, cfg.jwt.secretKey, o, (err, token) => {
+    jwt.sign({ id, lv, name }, cfg.jwt.secretKey, o, (err, token) => {
       if (err) reject(err)
       resolve(token)
     })
   })
 }
+
 const verifyToken = (t) => {
   return new Promise((resolve, reject) => {
     if (!t) resolve({ id: 'guest', name: '손님', lv: 3 })
@@ -34,16 +36,18 @@ const verifyToken = (t) => {
   })
 }
 
-const getToken = async(t)=>{
+const getToken = async(t) => {
   let vt = await verifyToken(t)
-  if(vt.lv>2) return {user:vt,token:null}
-  const diff = moment(vt.exp *1000).diff(moment(),'seconds')
+  if (vt.lv > 2) return { user: vt, token: null }
+  const diff = moment(vt.exp * 1000).diff(moment(), 'seconds')
+  // return vt
   console.log(diff)
-  if(diff >(vt.exp - vt.iat)/cfg.jwt.expiresInDiv) return {user:vt , token: null}
+  const expSec = (vt.exp - vt.iat)
+  if (diff > expSec / cfg.jwt.expiresInDiv) return { user: vt, token: null }
 
-  const nt = await signToken(vt.id, vt.lv, vt.name,vt.rmb)
-  vt=await verifyToken(nt)
-  return {user:vt , token:nt}
+  const nt = await signToken(vt.id, vt.lv, vt.name, expSec)
+  vt = await verifyToken(nt)
+  return { user: vt, token: nt }
 }
 
 router.all('*', function(req, res, next) {
@@ -60,6 +64,7 @@ router.all('*', function(req, res, next) {
 
 router.use('/manage', require('./manage'))
 router.use('/page', require('./page'))
+router.use('/board', require('./board')) // add
 router.all('*', function(req, res, next) {
   // 또 검사해도 됨
   if (req.user.lv > 2) return res.send({ success: false, msg: '권한이 없습니다.' })

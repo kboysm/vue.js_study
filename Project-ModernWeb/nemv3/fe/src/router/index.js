@@ -34,17 +34,15 @@ axios.interceptors.response.use(response=> {
 
 
 const pageCheck = (to, from, next) => {
-  // return next()
-  axios.post(`${apiRootPath}page`, { name: to.path.replace('/', ''), headers: { Authorization: localStorage.getItem('token') } })
-  //JSON.stringify(localStorage.getItem('token')) 이거 꼭 해주어야함 JSON.stringgify를 안해주면 백엔드에 오브젝트 타입으로 들어가서 손님계정으로 손님권한을 부여받을 수 없음 찾는데 2시간 걸림
+  // axios.post('page', { name: to.path.replace('/', '') }, { headers: { Authorization: localStorage.getItem('token') } })
+  axios.post('page', { name: to.path })
     .then((r) => {
-      if (!r.data.success) { throw new Error(r.data.msg)}
+      if (!r.data.success) throw new Error(r.data.msg)
       next()
     })
     .catch((e) => {
-  
-      // console.error(e.message)
-      next(`/block/${e.message}`)
+      // next(`/block/${e.message}`)
+      next(`/block/${e.message.replace(/\//gi, ' ')}`)
     })
 }
 
@@ -53,6 +51,12 @@ const routes = [
     path: '/manage/boards',
     name: 'manageBoards',
     component: () => import('../views/manage/boards'),
+    beforeEnter: pageCheck
+  },
+  {
+    path: '/',
+    name: 'boardAnyone',
+    component: () => import('../views/board/anyone'),
     beforeEnter: pageCheck
   },
   {
@@ -80,11 +84,11 @@ const routes = [
     name: '회원가입',
     component: () => import('../views/register')
   },
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: Home
+  // },
   {
     path: '/site',
     name: '사이트',
