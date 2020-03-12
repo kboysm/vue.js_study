@@ -28,15 +28,17 @@
         <v-data-table
           :headers="headers"
           :items="articles"
-          :loading="loading">
+          :loading="loading"
+          >
           <template slot="items" slot-scope="props">
             <td :class="headers[0].class">{{ id2date(props.item._id)}}</td>
             <td :class="headers[1].class">{{ props.item.title }}</td>
-            <td :class="headers[2].class">{{ props.item._user ? props.item._user.id : '손님' }}</td>
+            <td :class="headers[2].class">{{ props.item._user.id ? props.item._user.id : '손님' }}</td>
             <td :class="headers[3].class">{{ props.item.cnt.view }}</td>
             <td :class="headers[4].class">{{ props.item.cnt.like }}</td>
           </template>
         </v-data-table>
+        {{articles}}
       </v-flex>
     </v-layout>
 
@@ -127,7 +129,7 @@ export default {
       headers: [
         { text: '날짜', value: '_id', sortable: true, class: 'hidden-sm-and-down' },
         { text: '제목', value: 'title', sortable: true },
-        { text: '글쓴이', value: '_user', sortable: false },
+        { text: '글쓴이', value: '_user.id', sortable: false },
         { text: '조회수', value: 'cnt.view', sortable: true },
         { text: '추천', value: 'cnt.like', sortable: true }
       ],
