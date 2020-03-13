@@ -20,7 +20,7 @@
         fab
         @click="addDialog"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi mdi-plus</v-icon>
       </v-btn>
     </v-layout>
     <v-dialog v-model="dialog" persistent max-width="500px">

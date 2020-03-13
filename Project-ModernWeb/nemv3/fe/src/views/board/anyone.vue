@@ -45,12 +45,7 @@
             >
               보기
             </a>
-            <a
-            small
-              @click="deleteItem(item)"
-            >
-              삭제
-            </a>
+            
           </template>
           <!-- <tr v-for="(item,index) in articles" :key="index">
             <td>{{ id2date(item._id)}}</td>
@@ -74,7 +69,7 @@
       fab
       @click="addDialog"
     >
-      <v-icon>add</v-icon>
+      <v-icon>mdi mdi-plus</v-icon>
     </v-btn>
     <v-dialog v-model="dialog" persistent max-width="500px">
       <v-card v-if="!dlMode">
