@@ -55,8 +55,14 @@ const routes = [
   },
   {
     path: '/',
+    name: 'Home',
+    component: () => import('../views/Home'),
+    beforeEnter: pageCheck
+  },
+  {
+    path: '/board/:name',
     name: 'boardAnyone',
-    component: () => import('../views/board/anyone'),
+    component: () => import('../views/board'),
     beforeEnter: pageCheck
   },
   {

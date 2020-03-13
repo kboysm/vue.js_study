@@ -77,7 +77,7 @@
           <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
         </div>
        pages : {{pages}} <br>
-      pagination.itemsPerPage: {{pagination.itemsPerPage}} <br>
+      pagination.sortDesc: {{pagination.sortDesc}} <br>
       </v-flex>
     </v-layout>
 
@@ -261,7 +261,7 @@ export default {
       }
     },
     get () {
-      this.$axios.get('board/아무나')
+      this.$axios.get(`board/read/${this.$route.params.name}`)
         .then(({ data }) => {
           if (!data.success) throw new Error(data.msg)
           this.board = data.d
@@ -380,7 +380,11 @@ export default {
         this.delay()
         // this.list()
       }
-    }
+    },
+    '$route' (to, from) {
+      console.log(to.path, from.path)
+      this.get()
+    } // 같은 컴포넌트로 여러개의 게시판을 렌더링 하기 때문에 변경 사항이 없다고 판단한다. 하여 watch옵션으로 $route를 감시하여 변화를 주어야 한다.
   },
   computed: {
     setSkip () {

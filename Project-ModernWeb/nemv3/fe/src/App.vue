@@ -112,18 +112,39 @@
       siteCopyright: '기다리는중',
       siteDark: false,
       items:[
+        {
+      icon: 'mdi mdi-account',
+      title: '현황',
+      act: true,
+      subItem: [
+        {
+          icon:"mdi mdi-account-box",
+          title: '오늘',
+          to: {
+            path: '/'
+          }
+        }
+      ]
+    },
             {
           icon: 'mdi mdi-comment-outline',
-          title: '끄적끄적',
+          title: '게시판 목록',
           act: true,
           subItem: [
-            {
-              icon: 'mdi mdi-checkbox-blank-outline',
-              title: '아무나',
-              to: {
-                path: '/'
-              }
-            }
+            // {
+            //   icon: 'mdi mdi-checkbox-blank-outline',
+            //   title: '아무나',
+            //   to: {
+            //     path: '/board/아무나'
+            //   }
+            // },
+            // {
+            //   icon: 'mdi mdi-checkbox-blank-outline',
+            //   title: '코딩',
+            //   to: {
+            //     path: '/board/코딩'
+            //   }
+            // }
           ]
         },
         {
@@ -197,6 +218,10 @@
        
       ]
     }),
+     mounted () {
+    this.getSite()
+    this.getBoards()
+  },
     methods: {
       signOut () {
       // localStorage.removeItem('token')
@@ -210,6 +235,22 @@
           this.siteCopyright = r.data.d.copyright
            if(r.data.d.dark) this.$vuetify.theme.dark = true
            else this.$vuetify.theme.dark = false
+        })
+        .catch(e => console.error(e.message))
+    },
+     getBoards () {
+      this.$axios.get('/board/list')
+        .then(({ data }) => {
+          console.log(data.ds)
+          data.ds.forEach(v => {
+            this.items[1].subItem.push({
+              title: v.name,
+              to: {
+                path: `/board/${v.name}`
+              }
+            })
+            console.log(`/board/${v.name}`)
+          })
         })
         .catch(e => console.error(e.message))
     }

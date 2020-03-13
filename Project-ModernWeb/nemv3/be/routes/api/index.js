@@ -7,7 +7,7 @@ var moment = require('moment')
 router.use('/sign', require('./sign'))
 router.use('/site', require('./site'))
 router.use('/register', require('./register'))
-
+router.use('/board', require('./board')) // add
 const signToken = (_id,id, lv, name, exp) => {
   return new Promise((resolve, reject) => {
     const o = {
@@ -65,7 +65,7 @@ router.all('*', function(req, res, next) {
 router.use('/manage', require('./manage'))
 router.use('/page', require('./page'))
 router.use('/article', require('./article')) // add
-router.use('/board', require('./board')) // add
+
 router.all('*', function(req, res, next) {
   // 또 검사해도 됨
   if (req.user.lv > 2) return res.send({ success: false, msg: '권한이 없습니다.' })
