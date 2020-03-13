@@ -93,6 +93,18 @@
     >
       <span>{{siteCopyright}}</span>
     </v-footer>
+     <v-snackbar
+       v-model="$store.state.sb.act"
+       :color="$store.state.sb.color"
+     >
+       {{ $store.state.sb.msg }}
+       <v-btn
+         flat
+         @click="$store.commit('pop', { act: false })"
+       >
+         닫기
+       </v-btn>
+     </v-snackbar>
   </v-app>
 </template>
 

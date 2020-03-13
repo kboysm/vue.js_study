@@ -78,7 +78,7 @@
       <v-btn
         color="pink"
         text
-        @click="snackbar = false"
+        @click="this.$store.commit('pop', { msg: e.message, color: 'warning' })"
       >
         Close
       </v-btn>

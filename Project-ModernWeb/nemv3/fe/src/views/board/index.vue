@@ -268,7 +268,7 @@ export default {
           this.list()
         })
         .catch((e) => {
-          this.pop(e.message, 'error')
+          this.$store.commit('pop', { msg: e.message, color: 'warning' })
         })
     },
     add () {
@@ -280,7 +280,7 @@ export default {
           this.list()
         })
         .catch((e) => {
-          this.pop(e.message, 'error')
+          this.$store.commit('pop', { msg: e.message, color: 'warning' })
         })
     },
     list () {
@@ -302,7 +302,7 @@ export default {
 
         })
         .catch((e) => {
-          this.pop(e.message, 'error')
+          this.$store.commit('pop', { msg: e.message, color: 'warning' })
           this.loading = false
         })
     },
@@ -325,7 +325,7 @@ export default {
           this.loading = false
         })
         .catch((e) => {
-          this.pop(e.message, 'error')
+          this.$store.commit('pop', { msg: e.message, color: 'warning' })
           this.loading = false
         })
     },
@@ -343,7 +343,7 @@ export default {
           // this.list()
         })
         .catch((e) => {
-          this.pop(e.message, 'error')
+          this.$store.commit('pop', { msg: e.message, color: 'warning' })
         })
     },
      del () {
@@ -354,7 +354,7 @@ export default {
           this.list()
         })
         .catch((e) => {
-          this.pop(e.message, 'error')
+          this.$store.commit('pop', { msg: e.message, color: 'warning' })
         })
     },
     pop (m, c) {

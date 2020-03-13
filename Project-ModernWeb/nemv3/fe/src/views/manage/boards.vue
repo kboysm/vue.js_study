@@ -74,7 +74,8 @@
       <v-btn
         :color="sb.color"
         text
-        @click="sb.act = false"
+        @click="this.$store.commit('pop', { act:false})"
+        
       >
         닫기
       </v-btn>
