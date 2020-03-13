@@ -24,11 +24,27 @@
       <!-- <v-flex xs12 sm6 md4 v-for="article in articles" :key="article._id">
         {{article}}
       </v-flex> -->
+      <v-flex xs12 sm4 offset-sm8>
+        <v-text-field
+          label="검색"
+          append-icon="mdi mdi-account-search"
+          v-model="params.search"
+          clearable
+        ></v-text-field>
+      </v-flex>
       <v-flex xs12>
         <v-data-table
           :headers="headers"
           :items="articles"
-          :loading="loading"
+           :server-items-length="pagination.itemsLength"
+           :options.sync="pagination"
+           :footer-props="{
+              'items-per-page-options': [5, 10, 15, 20]
+            }"
+
+            :loading="loading"
+            class="text-no-wrap"
+            sort-by
           >
            <template slot="items" slot-scope="props">
             <td :class="headers[0].class">{{ id2date(props.item._id)}}</td>
@@ -55,7 +71,13 @@
             <td>{{ item.cnt.like }}</td>
             
           </tr> -->
+          
         </v-data-table>
+        <div class="text-xs-center pt-2">
+          <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+        </div>
+       pages : {{pages}} <br>
+      pagination.itemsPerPage: {{pagination.itemsPerPage}} <br>
       </v-flex>
     </v-layout>
 
@@ -165,6 +187,7 @@ export default {
   components: { boardCard },
   data () {
     return {
+      defaultRowp:10,
       board: {
         name: '로딩중...',
         rmk: '무엇?'
@@ -196,14 +219,31 @@ export default {
         title: '',
         content: ''
       },
+      pagination: {
+        page:1,
+        itemsPerPage:5,
+        itemsLength:5,
+
+        
+      },
       dlMode: 0, // 0: read, 1: write, 2: modify
       selArticle: {},
-      ca: false
+      ca: false,
+      params: {
+        draw: 0,
+        search: '',
+        skip: 0,
+        sort: '_id',
+        order: 0,
+        limit: 1
+      },
+      timeout: null
     }
   },
   mounted () {
     this.get()
   },
+  
   methods: {
     addDialog () {
       this.dialog = true
@@ -245,16 +285,32 @@ export default {
     },
     list () {
       if (this.loading) return
+      if (!this.board._id) return
       this.loading = true
-      this.$axios.get(`article/list/${this.board._id}`)
+      this.params.draw ++
+      this.params.skip = this.setSkip
+      this.params.limit = this.pagination.itemsPerPage
+      this.params.sort = this.setSort
+      this.params.order = this.setOrder
+
+      this.$axios.get(`article/list/${this.board._id}`, { params: this.params })
         .then(({ data }) => {
+          if (!data.success) throw new Error(data.msg)
+          this.pagination.itemsLength = data.t
           this.articles = data.ds
           this.loading = false
+
         })
         .catch((e) => {
           this.pop(e.message, 'error')
           this.loading = false
         })
+    },
+    delay () {
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        this.list()
+      }, 1000)
     },
     read (atc) {
       this.selArticle = atc
@@ -310,6 +366,42 @@ export default {
       if (!val) return '잘못된 시간 정보'
       return new Date(parseInt(val.substring(0, 8), 16) * 1000).toLocaleString()
     }
-  }
+  },
+  
+  watch: {
+    pagination: {
+      handler() {
+        this.list()
+      },
+      deep: true
+    },
+    'params.search': {
+      handler() {
+        this.delay()
+        // this.list()
+      }
+    }
+  },
+  computed: {
+    setSkip () {
+      if (this.pagination.page <= 0) return 0
+      return (this.pagination.page - 1) * this.pagination.itemsPerPage
+    },
+    setSort () {
+      let sort = this.pagination.sortBy
+      if (this.pagination.sortBy) sort = '_id'
+      return sort
+    },
+    setOrder () {
+      return this.pagination.sortDesc[0] === true ? 1 : -1
+    },
+    pages () {
+
+      if (this.pagination.itemsPerPage == null ||
+        this.pagination.itemsLength == null
+      ) return 0
+      return Math.ceil(this.pagination.itemsLength / this.pagination.itemsPerPage)
+    },
+  },
 }
 </script>
