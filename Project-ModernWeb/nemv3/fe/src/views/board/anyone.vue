@@ -30,15 +30,37 @@
           :items="articles"
           :loading="loading"
           >
-          <template slot="items" slot-scope="props">
+           <template slot="items" slot-scope="props">
             <td :class="headers[0].class">{{ id2date(props.item._id)}}</td>
-            <td :class="headers[1].class">{{ props.item.title }}</td>
-            <td :class="headers[2].class">{{ props.item._user.id ? props.item._user.id : '손님' }}</td>
+            <td :class="headers[1].class" ><a @click="read(props.item)" small text class ="text-capitalize" left > {{ props.item.title }}</a></td>
+            <td :class="headers[2].class">{{ props.item._user ? props.item._user.id : '손님' }}</td>  
             <td :class="headers[3].class">{{ props.item.cnt.view }}</td>
             <td :class="headers[4].class">{{ props.item.cnt.like }}</td>
+          </template> 
+          <template v-slot:item.actions="{ item }">
+            <a
+              small
+              class="mr-2"
+               @click="read(item)"
+            >
+              보기
+            </a>
+            <a
+            small
+              @click="deleteItem(item)"
+            >
+              삭제
+            </a>
           </template>
+          <!-- <tr v-for="(item,index) in articles" :key="index">
+            <td>{{ id2date(item._id)}}</td>
+            <td ><a @click="read(item)" small text class ="text-capitalize" left > {{ item.title }}</a></td>
+            <td>{{ item._user ? item._user.id : '손님' }}</td>
+            <td>{{ item.cnt.view }}</td>
+            <td>{{ item.cnt.like }}</td>
+            
+          </tr> -->
         </v-data-table>
-        {{articles}}
       </v-flex>
     </v-layout>
 
@@ -100,6 +122,22 @@
         닫기
       </v-btn>
     </v-snackbar>
+
+    <v-dialog v-model="dlRead" persistent max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{rd.title}}</span>
+        </v-card-title>
+        <v-card-text>
+          {{rd.content}}
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="red darken-1" text @click.native="dlRead = false">닫기</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>    
+
   </v-container>
 </template>
 <script>
@@ -131,9 +169,15 @@ export default {
         { text: '제목', value: 'title', sortable: true },
         { text: '글쓴이', value: '_user.id', sortable: false },
         { text: '조회수', value: 'cnt.view', sortable: true },
-        { text: '추천', value: 'cnt.like', sortable: true }
+        { text: '추천', value: 'cnt.like', sortable: true },
+        { text: 'Actions', value: 'actions', sortable: false },
       ],
-      loading: false
+      loading: false,
+      dlRead: false,
+      rd: {
+        title: '',
+        content: ''
+      }
     }
   },
   mounted () {
@@ -171,32 +215,36 @@ export default {
         })
     },
     list () {
-      this.$axios.get(`article/${this.board._id}`)
+      if (this.loading) return
+      this.loading = true
+      this.$axios.get(`article/list/${this.board._id}`)
         .then(({ data }) => {
-          
           this.articles = data.ds
+          this.loading = false
         })
         .catch((e) => {
           this.pop(e.message, 'error')
+          this.loading = false
+        })
+    },
+    read (atc) {
+      this.rd.title = atc.title
+      this.loading = true
+      this.$axios.get(`article/read/${atc._id}`)
+        .then(({ data }) => {
+          this.dlRead = true
+          this.rd.content = data.d.content
+          this.loading = false
+        })
+        .catch((e) => {
+          this.pop(e.message, 'error')
+          this.loading = false
         })
     },
     pop (m, c) {
       this.sb.act = true
       this.sb.msg = m
       this.sb.color = c
-    },
-    list () {
-      if (this.loading) return
-      this.loading = true
-      this.$axios.get(`article/${this.board._id}`)
-        .then(({ data }) => {
-          this.articles = data.ds
-          this.loading = false
-        })
-        .catch((e) => {
-          this.pop(e.message, 'error')
-          this.loading = false
-        })
     },
     id2date (val) {
       if (!val) return '잘못된 시간 정보'
