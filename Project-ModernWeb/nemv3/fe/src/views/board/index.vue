@@ -1,37 +1,31 @@
 <template>
-  <v-container grid-list-md>
+ <v-container fluid :grid-list-md="!$vuetify.breakpoint.xs" :class="$vuetify.breakpoint.xs ? 'pa-0' : ''">
     <v-layout row wrap>
       <v-flex xs12>
         <v-card>
-          <v-img
-            class="white--text"
-            height="70px"
-            src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
-          >
-            <v-container fill-height fluid>
-              <v-layout fill-height>
-                <v-flex xs6 align-end flexbox>
-                  <span class="headline">{{board.name}}</span>
-                </v-flex>
-                <v-flex xs6 align-end flexbox>
-                  <span>{{board.rmk}}</span>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-img>
+
+        <v-card-title class="headline">
+    <v-tooltip bottom>
+      <span slot="activator">{{board.name}}</span>
+      <span>{{board.rmk}}</span>
+    </v-tooltip>
+    <v-spacer></v-spacer>
+    <v-text-field
+      v-model="params.search"
+      append-icon="mdi mdi-account-search"
+      label="검색"
+      clearable
+      style="width:40px"
+    ></v-text-field>
+  </v-card-title>
         </v-card>
       </v-flex>
       <!-- <v-flex xs12 sm6 md4 v-for="article in articles" :key="article._id">
         {{article}}
       </v-flex> -->
-      <v-flex xs12 sm4 offset-sm8>
-        <v-text-field
-          label="검색"
-          append-icon="mdi mdi-account-search"
-          v-model="params.search"
-          clearable
-        ></v-text-field>
-      </v-flex>
+
+
+
       <v-flex xs12>
         <v-data-table
           :headers="headers"
@@ -93,7 +87,7 @@
     >
       <v-icon>mdi mdi-plus</v-icon>
     </v-btn>
-    <v-dialog v-model="dialog" persistent max-width="500px">
+    <v-dialog v-model="dialog" persistent max-width="500px" :fullscreen="$vuetify.breakpoint.xs">
       <v-card v-if="!dlMode">
         <v-card-title>
           <span class="headline">{{selArticle.title}}</span>
