@@ -6,6 +6,7 @@
       </v-card-title>
       <v-divider light></v-divider>
       <v-card-text>
+        <div>제목: {{board.name}}</div>
         <div>권한: {{board.lv}}</div>
         <div>설명: {{board.rmk}}</div>
       </v-card-text>

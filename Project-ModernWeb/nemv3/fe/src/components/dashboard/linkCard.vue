@@ -1,16 +1,18 @@
 <template>
   <div>
+    {{board}}
     <v-toolbar color="cyan" dark tabs>
-      <v-toolbar-title>{{board.title}}</v-toolbar-title>
+      <v-toolbar-title>{{board.name}}</v-toolbar-title>
       <v-tabs
         slot="extension"
         v-model="tab"
-        color="cyan"
+        color="white"
+        
       >
         <v-tabs-slider color="yellow"></v-tabs-slider>
-
-        <v-tab v-for="article in articles" :key="article._id">
-          {{ article.title }}
+        
+        <v-tab v-for="article in articles" :key="article._id" >
+           {{ article.title }}
         </v-tab>
       </v-tabs>
     </v-toolbar>
