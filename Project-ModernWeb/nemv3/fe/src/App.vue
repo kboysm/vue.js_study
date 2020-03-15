@@ -99,7 +99,7 @@
      >
        {{ $store.state.sb.msg }}
        <v-btn
-         flat
+         text
          @click="$store.commit('pop', { act: false })"
        >
          닫기

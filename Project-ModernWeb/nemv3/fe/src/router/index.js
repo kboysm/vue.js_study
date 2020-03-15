@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 import axios from 'axios'
 import store from '../store'
 Vue.use(VueRouter)
@@ -73,8 +72,8 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Home',
-    component: () => import('../views/Home'),
+    name: 'dashboard',
+    component: () => import('../views/dashboard/index'),
     beforeEnter: pageCheck
   },
   {

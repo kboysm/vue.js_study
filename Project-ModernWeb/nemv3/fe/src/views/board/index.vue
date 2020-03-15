@@ -5,8 +5,12 @@
         <v-card>
 
         <v-card-title class="headline">
+
     <v-tooltip bottom>
-      <span slot="activator">{{board.name}}</span>
+      <template v-slot:activator="{ on }">
+      <span slot="activator" v-on="on" >
+       {{board.name}}
+        </span></template>
       <span>{{board.rmk}}</span>
     </v-tooltip>
     <v-spacer></v-spacer>

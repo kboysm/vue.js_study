@@ -32,6 +32,21 @@ router.post('/:_board', (req, res, next) => {
     })
 })
 
+router.get('/read/:_id', (req, res, next) => {
+  const _id = req.params._id
+
+  Article.findByIdAndUpdate(_id, { $inc: { 'cnt.view':1 } },{new:true})
+  // .select('content cnt.view')
+    .then(r => {
+      console.log(r)
+      if (!r) throw new Error('잘못된 게시판입니다')
+      res.send({ success: true, d: r, token: req.token })
+    })
+    .catch(e => {
+      res.send({ success: false, msg: e.message })
+    })
+})
+
 router.get('/list/:_board', (req, res, next) => {
   const _board = req.params._board
   let { search, sort, order, skip, limit } = req.query
@@ -61,6 +76,7 @@ router.get('/list/:_board', (req, res, next) => {
         .populate('_user', '-pwd')
     })
     .then(rs => {
+      console.log('lsm')
       res.send({ success: true, t: total, ds: rs, token: req.token })
     })
     .catch(e => {

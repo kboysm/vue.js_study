@@ -37,6 +37,7 @@ module.exports = app;
 const cfg = require('../config/conf')
 console.log(cfg)
 const mongoose = require('mongoose')
+mongoose.set('useFindAndModify', false);
 // const userSchema = new mongoose.Schema({
 //   name: { type: String, default: '', unique: true, index: true },
 //   age: { type: Number, default: 1 }
