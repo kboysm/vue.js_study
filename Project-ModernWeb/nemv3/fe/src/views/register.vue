@@ -49,7 +49,8 @@
 
               <v-spacer></v-spacer>
 
-                <v-btn text @click="submit">가입</v-btn>
+                <!-- <v-btn text @click="submit">가입</v-btn> -->
+                <v-btn text @click="checkRobot()">가입</v-btn>
                 <v-btn text @click="clear">초기화</v-btn>
                 </form>
             </ValidationObserver>
@@ -109,7 +110,8 @@
         form: {
             id: '',
             name: '',
-            pwd: ''
+            pwd: '',
+            response: ''
             },
         sb: {
             act: false,
@@ -122,16 +124,17 @@
 
     methods: {
       onVerify (r) {
-      console.log(r)
+      this.form.response = r
+      this.$refs.recaptcha.reset()
+      this.submit()
       },
       onExpired () {
+        this.form.response = ''
         this.$refs.recaptcha.reset()
       },
-      exec () {
-        this.$refs.recaptcha.execute()
-      },
-      reset () {
-        this.$refs.recaptcha.reset()
+      checkRobot () {
+        if (this.form.response) this.submit()
+        else this.$refs.recaptcha.execute()
       },
 
 

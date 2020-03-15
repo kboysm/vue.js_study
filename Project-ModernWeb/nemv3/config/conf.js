@@ -1,4 +1,5 @@
 module.exports = {
+  recaptchaSecretKey:'',
   dbUrl: 'mongodb://localhost:27017/nemv',
   // dbUrl: 'mongodb://localhost:27017/nemv',
   admin: {

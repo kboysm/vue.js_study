@@ -78,7 +78,7 @@
       <v-btn
         color="pink"
         text
-        @click="this.$store.commit('pop', { msg: e.message, color: 'warning' })"
+        @click="this.$store.commit('pop', { act:false})"
       >
         Close
       </v-btn>
