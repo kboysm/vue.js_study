@@ -38,13 +38,22 @@
                     ></v-text-field>
                 </ValidationProvider>
                 
-                
+                <vue-recaptcha
+                ref="recaptcha"
+                :sitekey="$cfg.recaptchaSiteKey"
+                size="invisible"
+                @verify="onVerify"
+                @expired="onExpired"
+              >
+              </vue-recaptcha>
+
+              <v-spacer></v-spacer>
 
                 <v-btn text @click="submit">가입</v-btn>
                 <v-btn text @click="clear">초기화</v-btn>
                 </form>
             </ValidationObserver>
- 
+            
             <v-snackbar
             v-model="sb.act"
             >
@@ -112,6 +121,20 @@
     }),
 
     methods: {
+      onVerify (r) {
+      console.log(r)
+      },
+      onExpired () {
+        this.$refs.recaptcha.reset()
+      },
+      exec () {
+        this.$refs.recaptcha.execute()
+      },
+      reset () {
+        this.$refs.recaptcha.reset()
+      },
+
+
       submit () {
         this.$refs.observer.validate()
          .then(r => {

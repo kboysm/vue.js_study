@@ -16,3 +16,5 @@ yarn add jsonwebtoken // jwt 모듈
  yarn add vee-validate // 유효성 검사 frontend 모듈로 설치
 
 crypto는 기본으로 내장되어 있기 때문에 설치 x
+
+yarn add vue-recaptcha // 리캡챠
