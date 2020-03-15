@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import axios from 'axios'
-
+import store from '../store'
 Vue.use(VueRouter)
 
 Vue.prototype.$axios = axios
@@ -18,6 +18,7 @@ axios.interceptors.request.use(function (config) {
   return config;
 }, function (error) {
   // Do something with request error
+  
   return Promise.reject(error);
 });
 
@@ -28,7 +29,23 @@ axios.interceptors.response.use(response=> {
   if(token) localStorage.setItem('token',token)
   return response;
 }, function (error) {
-
+  console.log(error)
+  console.log(error.response)
+  switch (error.response.status) {
+    case 400:
+      store.commit('pop', { msg: `잘못된 요청입니다(${error.response.status}:${error.message})`, color: 'error' })
+      break
+    case 401:
+      store.commit('delToken')
+      store.commit('pop', { msg: `인증 오류입니다(${error.response.status}:${error.message})`, color: 'error' })
+      break
+    case 403:
+      store.commit('pop', { msg: `이용 권한이 없습니다(${error.response.status}:${error.message})`, color: 'warning' })
+      break
+    default:
+      store.commit('pop', { msg: `알수 없는 오류입니다(${error.response.status}:${error.message})`, color: 'error' })
+      break
+  }
   return Promise.reject(error);
 });
 
@@ -42,7 +59,8 @@ const pageCheck = (to, from, next) => {
     })
     .catch((e) => {
       // next(`/block/${e.message}`)
-      next(`/block/${e.message.replace(/\//gi, ' ')}`)
+      // next(`/block/${e.message.replace(/\//gi, ' ')}`)
+      if (!e.response) store.commit('pop', { msg: e.message, color: 'warning' })
     })
 }
 

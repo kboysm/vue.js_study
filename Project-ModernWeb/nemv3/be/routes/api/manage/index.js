@@ -3,6 +3,7 @@ var createError = require('http-errors');
 var router = express.Router();
 
 router.all('*', function(req, res, next) {
+  //http 403(Forbidden)의 경우
   console.log(req.user)
   if (req.user.lv) return res.send({ success: false, msg: '권한이 없습니다.' })
   next()

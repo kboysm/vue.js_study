@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const cfg = require('../../../../config/conf')
 const User = require('../../../models/users')
 const crypto = require('crypto')
-
+const fs = require('fs')
 const signToken = (_id,id, lv, name, rmb) => {
   return new Promise((resolve, reject) => {
     const o = {
@@ -23,10 +23,13 @@ const signToken = (_id,id, lv, name, rmb) => {
 }
 
 router.post('/in', (req, res) => {
+ // fs.writeFile('signError')
   const {_id, id, pwd, remember } = req.body
+  // http 400(BadRequest)의 경우 
   if (!id) return res.send({ success: false, msg: '아이디가 없습니다.'})
   if (!pwd) return res.send({ success: false, msg: '비밀번호가 없습니다.'})
   if (remember === undefined) return res.send({ success: false, msg: '기억하기가 없습니다.'})
+
   User.findOne({ id })
       .then((r) => {
         if (!r) throw new Error('존재하지 않는 아이디입니다.')

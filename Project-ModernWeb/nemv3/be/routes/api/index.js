@@ -51,7 +51,7 @@ const getToken = async(t) => {
 }
 
 router.all('*', function(req, res, next) {
-  // 토큰 검사
+  // 토큰 검사 http 401(Unauthorized)의 경우
   getToken(req.headers.authorization)
     .then(v => {
       console.log(v)
