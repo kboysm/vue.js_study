@@ -7,11 +7,12 @@ import cfg from '../config'
 import VueRecaptcha from 'vue-recaptcha'
 import LoadScript from 'vue-plugin-load-script';
 // import Notifications from 'vue-notification'
+import Trend from 'vuetrend'
 
 Vue.config.productionTip = false
 
 Vue.prototype.$cfg = cfg
-
+Vue.use(Trend)
 // Vue.use(Notifications)
 Vue.use(LoadScript)
 //loadScript 를 LoadScript로 쓰면 error 잘못써서 한참 해맸음..
