@@ -2,6 +2,13 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 const User = require('../../../models/users')
+const multer = require('multer')
+
+router.post('/', multer({ dest: 'public/' }).single('bin') ,(req, res, next) => {
+  console.log(req.body)
+  console.log(req.file)
+  res.status(204).send()
+})
 
 router.get('/', function(req, res, next) {
   User.find()
