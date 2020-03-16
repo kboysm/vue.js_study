@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{board}}
     <v-toolbar color="cyan" dark tabs>
       <v-toolbar-title>{{board.name}}</v-toolbar-title>
       <v-tabs
