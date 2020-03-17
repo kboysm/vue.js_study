@@ -6,26 +6,53 @@ const multer = require('multer')
 const imgConvert = require('base64-img')
 const fs = require('fs')
 const sharp = require('sharp')
-const imageDataUri = require('image-data-uri')
+const imageDataURI = require('image-data-uri')
 
        
-router.post('/', multer({ dest: 'public/' }).single('test') ,(req, res, next) => {
-  // console.log(req.body)
-  // console.log(req.file)
+// router.post('/', multer({ dest: 'public/' }).single('test') ,(req, res, next) => {
+//   // console.log(req.body)
+//   // console.log(req.file)
   
-  sharp(req.file.path)
-  .resize(200,200)
-  // .crop(sharp.strategy.entropy) 이녀석이 에러의 원인이였음
-  .toBuffer()
-  .then( bf =>{
-    fs.unlinkSync(req.file.path)
-    console.log(bf)
-    res.send('12345')
-  })
-  .catch( e=>  {
-    console.log('파일에러 발생')
-    next(e)})
+//   sharp(req.file.path)
+//   .resize(200,200)
+//   // .crop(sharp.strategy.entropy) 이녀석이 에러의 원인이였음
+//   .toBuffer()
+//   .then( bf =>{
+//     fs.unlinkSync(req.file.path)
+//     console.log(bf)
+//     res.send('12345')
+//   })
+//   .catch( e=>  {
+//     console.log('파일에러 발생')
+//     next(e)})
+// })
+
+router.post('/', multer({ dest: 'public/' }).single('bin') ,(req, res, next) => {
+  
+  if (!req.user._id) {
+    console.log('_id가 없음')
+    throw createError(401, 'xxx')
+  }
+
+  sharp(req.file.path).resize({
+    width: 200,
+    height: 200,
+    fit: sharp.fit.cover,
+    position: sharp.strategy.entropy
+  }).toBuffer()
+    .then(bf => {
+      fs.unlinkSync(req.file.path)
+      const img = imageDataURI.encode(bf, 'png')
+      return User.findByIdAndUpdate(req.user._id, { $set: { img } }, { new: true }).select('-img')
+      // res.send(imageDataURI.encode(bf, 'png'))
+    })
+    .then(r => {
+      res.setHeader('Content-Type', 'text/plain')
+      res.send(r._id.toString())
+    })
+    .catch(e => next(e))
 })
+
 
 router.delete('/', (req, res, next) => {
   res.status(204).send()
