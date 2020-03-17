@@ -11,13 +11,20 @@
       <v-list>
         <v-list-item two-line>
             <v-list-item-avatar>
-              <img src="https://randomuser.me/api/portraits/men/81.jpg">
+              <img :src="$store.state.user.img">
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title>못생겼지롱</v-list-item-title>
-              <v-list-item-subtitle>랜덤얼굴</v-list-item-subtitle>
+              <v-list-item-title>{{$store.state.user.name}}</v-list-item-title>
+              <v-list-item-subtitle>프로필 사진 수정 ></v-list-item-subtitle>
             </v-list-item-content>
+
+            <v-list-item-action>
+              <v-btn icon :to="{path:'/view/user'}">
+                <v-icon>mdi mdi-account</v-icon>
+              </v-btn>
+            </v-list-item-action>
+
           </v-list-item>
 
           <v-divider></v-divider>

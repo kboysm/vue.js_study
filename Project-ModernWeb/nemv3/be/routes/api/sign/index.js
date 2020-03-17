@@ -22,28 +22,30 @@ const signToken = (_id,id, lv, name, rmb) => {
   })
 }
 
-router.post('/in', (req, res) => {
- // fs.writeFile('signError')
-  const {_id, id, pwd, remember } = req.body
-  // http 400(BadRequest)의 경우 
-  if (!id) return res.send({ success: false, msg: '아이디가 없습니다.'})
-  if (!pwd) return res.send({ success: false, msg: '비밀번호가 없습니다.'})
-  if (remember === undefined) return res.send({ success: false, msg: '기억하기가 없습니다.'})
+router.post('/in', (req, res, next) => {
+  const { id, pwd, remember } = req.body
+  if (!id) throw createError(400, '아이디가 없습니다')
+  if (!pwd) throw createError(400, '비밀번호가 없습니다')
+  if (remember === undefined) throw createError(400, '기억하기가 없습니다.')
 
-  User.findOne({ id })
-      .then((r) => {
-        if (!r) throw new Error('존재하지 않는 아이디입니다.')
-        const p = crypto.scryptSync(pwd, r._id.toString(), 64, { N: 1024 }).toString('hex')
-        if (r.pwd !== p) throw new Error('비밀번호가 틀립니다.')
-        return signToken(r._id,r.id, r.lv, r.name, remember)
-      })
-      .then((r) => {
-        res.send({ success: true, token: r })
-      })
-      .catch((e) => {
-        res.send({ success: false, msg: e.message })
-      })
-  })
+  let u = {}
+  User.findOne({ id }).lean()
+    .then((r) => {
+      if (!r) throw new Error('존재하지 않는 아이디입니다.')
+      const p = crypto.scryptSync(pwd, r._id.toString(), 64, { N: 1024 }).toString('hex')
+      if (r.pwd !== p) throw new Error('비밀번호가 틀립니다.')
+      delete r.pwd
+      u = r
+      return signToken(r._id, r.id, r.lv, r.name, remember)
+    })
+    .then((r) => {
+      res.send({ success: true, token: r, user: u })
+    })
+    .catch((e) => {
+      res.send({ success: false, msg: e.message })
+      // next(createError(401, e.massage))
+    })
+})
 
 router.post('/out', (req, res) => {
   res.send({ success: false, msg: '아직 준비 안됨.'})
