@@ -97,7 +97,8 @@
           <span class="headline">{{selArticle.title}}</span>
         </v-card-title>
         <v-card-text>
-          {{selArticle.content}}
+          <!-- {{selArticle.content}} -->
+          <viewer :value="selArticle.content" />
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -131,12 +132,13 @@
                 ></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-textarea
+                <!-- <v-textarea
                   label="내용"
                   persistent-hint
                   required
                   v-model="form.content"
-                ></v-textarea>
+                ></v-textarea> -->
+                <editor v-model="form.content"/>
               </v-flex>
             </v-layout>
           </v-container>
