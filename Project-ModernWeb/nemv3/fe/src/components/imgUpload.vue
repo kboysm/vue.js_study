@@ -2,14 +2,16 @@
   <div id="app">
     
     <file-pond
-        name="test"
-        ref="pond"
-        class-name="my-pond"
-        label-idle="Drop files here..."
-        allow-multiple="true"
-        accepted-file-types="image/jpeg, image/png"
-        v-bind:files="myFiles"
-        v-on:init="handleFilePondInit"/>
+      name="test"
+      ref="pond"
+      class-name="my-pond"
+      allow-multiple="true"
+      accepted-file-types="image/jpeg, image/png"
+      v-bind:files="myFiles"
+      :server="server"
+      v-on:init="handleFilePondInit"
+      @processgile="onload"
+      />
     
   </div>
 </template>
@@ -32,16 +34,23 @@ const FilePond = vueFilePond( FilePondPluginFileValidateType, FilePondPluginImag
 export default {
     name: 'app',
     data: function() {
-        return { myFiles: ['index.html'] };
+        return { 
+            myFiles: [],
+            server: {
+                    url: `${this.$apiRootPath}user`,
+                }
+            };
     },
     methods: {
-        handleFilePondInit: function() {
-            console.log('FilePond has initialized');
-
-            // example of instance method call on pond reference
-            this.$refs.pond.getFiles();
-        }
+    handleFilePondInit () {
+      console.log('FilePond has initialized')
+      // FilePond instance methods are available on `this.$refs.pond`
     },
+    onload (e, r) {
+        if(e) return console.error(e.message)
+      console.log(r)
+    }
+  },
     components: {
         FilePond
     }

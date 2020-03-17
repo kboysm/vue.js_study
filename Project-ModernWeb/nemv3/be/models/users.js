@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
     pwd: { type: String, default: '' },
     lv: { type: Number, default: 2 }, //add
     inCnt: { type: Number, default: 0 }, //add
-    retry: { type: Number, default: 0 }
+    retry: { type: Number, default: 0 },
+    img: { type: String, default: '' }
   })
 
 const User = mongoose.model('User', userSchema)

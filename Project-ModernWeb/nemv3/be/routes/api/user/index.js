@@ -8,29 +8,25 @@ const fs = require('fs')
 const sharp = require('sharp')
 const imageDataUri = require('image-data-uri')
 
-router.post('/', multer({ dest: 'public/' }).single('bin') ,(req, res, next) => {
+       
+router.post('/', multer({ dest: 'public/' }).single('test') ,(req, res, next) => {
   console.log(req.body)
   console.log(req.file)
   
-  // imgConvert.base64(req.file.path, (err, fd) => {
-  //   if (err) return next(err)
-  //   // console.log(fd)
-  //   fs.writeFileSync('public/xxx.txt', fd)
-  // })
-  // res.status(204).send()
-
-
-  sharp(req.file.path)
-  .rotate()
-  .resize(200,200)
-  .toBuffer()
-  .then( data =>{
-    const d = imageDataUri.encode(data,'png')
-    res.send(d)
-
+  sharp(req.file.path).resize(200,200)
+  .crop(sharp.strategy.entropy).toBuffer()
+  .then( bf =>{
+    fs.unlinkSync(req.file.path)
+    console.log(bf)
+    res.send('12345')
   })
-  .catch( err => next(err))
+  .catch( e=>  {
+    console.log('파일에러 발생')
+    next(e)})
+})
 
+router.delete('/', (req, res, next) => {
+  res.status(204).send()
 })
 
 router.get('/', function(req, res, next) {
