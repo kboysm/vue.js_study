@@ -35,7 +35,6 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 const cfg = require('../config/conf')
-console.log(cfg)
 const mongoose = require('mongoose')
 mongoose.set('useFindAndModify', false);
 // const userSchema = new mongoose.Schema({

@@ -10,11 +10,13 @@ const imageDataUri = require('image-data-uri')
 
        
 router.post('/', multer({ dest: 'public/' }).single('test') ,(req, res, next) => {
-  console.log(req.body)
-  console.log(req.file)
+  // console.log(req.body)
+  // console.log(req.file)
   
-  sharp(req.file.path).resize(200,200)
-  .crop(sharp.strategy.entropy).toBuffer()
+  sharp(req.file.path)
+  .resize(200,200)
+  // .crop(sharp.strategy.entropy) 이녀석이 에러의 원인이였음
+  .toBuffer()
   .then( bf =>{
     fs.unlinkSync(req.file.path)
     console.log(bf)
