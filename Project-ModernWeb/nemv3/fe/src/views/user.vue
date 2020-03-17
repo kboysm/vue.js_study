@@ -3,14 +3,10 @@
     <v-layout align-center justify-center>
       <v-flex xs12 sm8 md4>
         <v-card class="elevation-12">
-          <v-card-title>sss</v-card-title>
+          <v-card-title>회원 정보 수정</v-card-title>
           <v-card-text>
-            <input id="bin" type="file">
-            <v-img :src="src" />
+            <img-upload />
           </v-card-text>
-          <v-card-actions>
-            <v-btn @click="upload">전송</v-btn>
-          </v-card-actions>
         </v-card>
       </v-flex>
     </v-layout>
@@ -18,7 +14,10 @@
 </template>
 
 <script>
+import imgUpload from '@/components/imgUpload'
+
 export default {
+  components: { imgUpload },
   data: () => ({
     form: {
       name: 'sss',
