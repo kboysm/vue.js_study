@@ -1,7 +1,29 @@
 <template>
-  <v-container>
-    <v-alert type="info" :value="true">
-      레벨 3 손님
-    </v-alert>
+  <v-container fluid :grid-list-md="!$vuetify.breakpoint.xs">
+    <v-layout wrap row>
+      <v-flex xs12 sm6>
+        <editor v-model="editorText"/>
+      </v-flex>
+      <v-flex xs12>
+        <span>{{editorText}}</span>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
+<script>
+import 'codemirror/lib/codemirror.css';
+import '@toast-ui/editor/dist/toastui-editor.css';
+ 
+import { Editor } from '@toast-ui/vue-editor';
+
+export default {
+  components: {
+    'editor': Editor,
+  },
+  data () {
+    return {
+      editorText: ''
+    }
+  }
+}
+</script>

@@ -26,3 +26,5 @@ yarn add sharp // img 데이터 축소
 yarn add image-data-uri // 이미지 데이터의 버퍼를 읽음
 
 yarn add vue-filepond filepond // 이미지 관련 모듈 프로필 사진이나 프리뷰 등등
+
+yarn add @toast-ui/vue-editor // 에디터
