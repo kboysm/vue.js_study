@@ -3,11 +3,34 @@ var createError = require('http-errors');
 var router = express.Router();
 const User = require('../../../models/users')
 const multer = require('multer')
+const imgConvert = require('base64-img')
+const fs = require('fs')
+const sharp = require('sharp')
+const imageDataUri = require('image-data-uri')
 
 router.post('/', multer({ dest: 'public/' }).single('bin') ,(req, res, next) => {
   console.log(req.body)
   console.log(req.file)
-  res.status(204).send()
+  
+  // imgConvert.base64(req.file.path, (err, fd) => {
+  //   if (err) return next(err)
+  //   // console.log(fd)
+  //   fs.writeFileSync('public/xxx.txt', fd)
+  // })
+  // res.status(204).send()
+
+
+  sharp(req.file.path)
+  .rotate()
+  .resize(200,200)
+  .toBuffer()
+  .then( data =>{
+    const d = imageDataUri.encode(data,'png')
+    res.send(d)
+
+  })
+  .catch( err => next(err))
+
 })
 
 router.get('/', function(req, res, next) {

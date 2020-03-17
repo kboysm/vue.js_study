@@ -20,3 +20,7 @@ crypto는 기본으로 내장되어 있기 때문에 설치 x
 yarn add vue-recaptcha // 리캡챠
 
 yarn add vuetrend //실제 값을 볼 필요 없이 추이만 보는데 쓰이는 차투룰 보통 스파크라인이라고 한다 제일 유명한 녀석이 vuetrend라고 한다.
+
+yarn add sharp // img 데이터 축소
+
+yarn add image-data-uri // 이미지 데이터의 버퍼를 읽음
