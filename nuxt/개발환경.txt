@@ -1,0 +1,21 @@
+1. 노드제이에스 부터 LTS버전으로 다운로드
+2.git 설치
+3.yarn 설치
+4.에디터(나는 비주얼스튜디오코드) 설치
+5.vue CLI설치
+6.Vetur , Vuetify, esLint, Task Explorer ,mdi icon , korean Extention 설치\
+7.exlint 셋팅 -> onFocusChange 설정 Turn Auto fix on or off 후 Edit in settings.json을 클릭 후
+{
+    "liveServer.settings.CustomBrowser": "chrome",
+    "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe",
+    "files.autoSave": "onFocusChange",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": [
+        "vue",
+        "html",
+        "javascript",
+    ]
+}
+를 써줌 

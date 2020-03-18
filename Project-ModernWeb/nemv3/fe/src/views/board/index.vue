@@ -1,65 +1,56 @@
 <template>
- <v-container fluid :grid-list-md="!$vuetify.breakpoint.xs" :class="$vuetify.breakpoint.xs ? 'pa-0' : ''">
+  <v-container
+    fluid
+    :grid-list-md="!$vuetify.breakpoint.xs"
+    :class="$vuetify.breakpoint.xs ? 'pa-0' : ''"
+  >
     <v-layout row wrap>
       <v-flex xs12>
         <v-card>
-
-        <v-card-title class="headline">
-
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on }">
-      <span slot="activator" v-on="on" >
-       {{board.name}}
-        </span></template>
-      <span>{{board.rmk}}</span>
-    </v-tooltip>
-    <v-spacer></v-spacer>
-    <v-text-field
-      v-model="params.search"
-      append-icon="mdi mdi-account-search"
-      label="검색"
-      clearable
-      style="width:40px"
-    ></v-text-field>
-  </v-card-title>
+          <v-card-title class="headline">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <span slot="activator" v-on="on">{{board.name}}</span>
+              </template>
+              <span>{{board.rmk}}</span>
+            </v-tooltip>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="params.search"
+              append-icon="mdi mdi-account-search"
+              label="검색"
+              clearable
+              style="width:40px"
+            ></v-text-field>
+          </v-card-title>
         </v-card>
       </v-flex>
       <!-- <v-flex xs12 sm6 md4 v-for="article in articles" :key="article._id">
         {{article}}
-      </v-flex> -->
-
-
+      </v-flex>-->
 
       <v-flex xs12>
         <v-data-table
           :headers="headers"
           :items="articles"
-           :server-items-length="pagination.itemsLength"
-           :options.sync="pagination"
-           :footer-props="{
+          :server-items-length="pagination.itemsLength"
+          :options.sync="pagination"
+          :footer-props="{
               'items-per-page-options': [5, 10, 15, 20]
             }"
-
-            :loading="loading"
-            class="text-no-wrap"
-            sort-by
-          >
-           <template slot="items" slot-scope="props">
+          :loading="loading"
+          class="text-no-wrap"
+          sort-by
+        >
+          <template slot="items" slot-scope="props">
             <td :class="headers[0].class">{{ id2date(props.item._id)}}</td>
-            <td :class="headers[1].class" >{{ props.item.title }}</td>
-            <td :class="headers[2].class">{{ props.item._user ? props.item._user.id : '손님' }}</td>  
+            <td :class="headers[1].class">{{ props.item.title }}</td>
+            <td :class="headers[2].class">{{ props.item._user ? props.item._user.id : '손님' }}</td>
             <td :class="headers[3].class">{{ props.item.cnt.view }}</td>
             <td :class="headers[4].class">{{ props.item.cnt.like }}</td>
-          </template> 
+          </template>
           <template v-slot:item.actions="{ item }">
-            <a
-              small
-              class="mr-2"
-               @click="read(item)"
-            >
-              보기
-            </a>
-            
+            <a small class="mr-2" @click="read(item)">보기</a>
           </template>
           <!-- <tr v-for="(item,index) in articles" :key="index">
             <td>{{ id2date(item._id)}}</td>
@@ -68,27 +59,19 @@
             <td>{{ item.cnt.view }}</td>
             <td>{{ item.cnt.like }}</td>
             
-          </tr> -->
-          
+          </tr>-->
         </v-data-table>
         <div class="text-xs-center pt-2">
           <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
         </div>
-       pages : {{pages}} <br>
-      pagination.sortDesc: {{pagination.sortDesc}} <br>
+        pages : {{pages}}
+        <br />
+        pagination.sortDesc: {{pagination.sortDesc}}
+        <br />
       </v-flex>
     </v-layout>
 
-    <v-btn
-      color="pink"
-      dark
-      small
-      absolute
-      bottom
-      right
-      fab
-      @click="addDialog"
-    >
+    <v-btn color="pink" dark small absolute bottom right fab @click="addDialog">
       <v-icon>mdi mdi-plus</v-icon>
     </v-btn>
     <v-dialog v-model="dialog" persistent max-width="500px" :fullscreen="$vuetify.breakpoint.xs">
@@ -96,10 +79,7 @@
         <v-card-title>
           <span class="headline">제목: {{selArticle.title}}</span>
           <v-spacer></v-spacer>
-          <v-btn
-              icon
-              @click="dialog=!dialog"
-          >
+          <v-btn icon @click="dialog=!dialog">
             <v-icon>mdi mdi-format-clear</v-icon>
           </v-btn>
         </v-card-title>
@@ -125,7 +105,6 @@
         </v-card-text>
         <v-divider></v-divider>
 
-
         <v-list two-line v-for="comment in selArticle._comments" :key="comment._id">
           <v-list-item>
             <v-list-item-content>
@@ -133,26 +112,13 @@
               <v-list-item-sub-title>{{comment._user ? comment._user.id : '손님'}}</v-list-item-sub-title>
             </v-list-item-content>
             <v-list-item-action>
-              <v-btn
-                  icon
-                  ripple
-                  @click="commentDialogOpen(comment)"
-              >
-                <v-icon color="warning lighten-1">
-                  create
-                </v-icon>
+              <v-btn icon ripple @click="commentDialogOpen(comment)">
+                <v-icon color="warning lighten-1">create</v-icon>
               </v-btn>
-
             </v-list-item-action>
             <v-list-item-action>
-              <v-btn
-                  icon
-                  ripple
-                  @click="delComment(comment)"
-              >
-                <v-icon color="error">
-                  clear
-                </v-icon>
+              <v-btn icon ripple @click="delComment(comment)">
+                <v-icon color="error">clear</v-icon>
               </v-btn>
             </v-list-item-action>
           </v-list-item>
@@ -160,45 +126,33 @@
         </v-list>
         <v-card-text>
           <v-text-field
-              label="댓글 작성"
-              v-model="formComment.content"
-              append-icon="message"
-              @keyup.enter="checkRobot"
-              @click:append="checkRobot"
-          >
-
-          </v-text-field>
+            label="댓글 작성"
+            v-model="formComment.content"
+            append-icon="message"
+            @keyup.enter="checkRobot"
+            @click:append="checkRobot"
+          ></v-text-field>
         </v-card-text>
-
-
       </v-card>
       <v-card light v-else>
         <v-card-title>
           <span class="headline">글 {{(dlMode === 1) ? '작성' : '수정'}}</span>
           <v-spacer></v-spacer>
-          <v-btn
-              icon
-              @click="dialog=!dialog"
-          >
+          <v-btn icon @click="dialog=!dialog">
             <v-icon>clear</v-icon>
           </v-btn>
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
           <v-form>
-            <v-text-field
-              label="제목"
-              persistent-hint
-              required
-              v-model="form.title"
-            ></v-text-field>
+            <v-text-field label="제목" persistent-hint required v-model="form.title"></v-text-field>
             <!-- <v-textarea
               label="내용"
               persistent-hint
               required
               v-model="form.content"
-            ></v-textarea> -->
-            <editor v-model="form.content"/>
+            ></v-textarea>-->
+            <editor v-model="form.content" />
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -211,36 +165,17 @@
     <v-dialog width="400" v-model="commentDialog">
       <v-card>
         <v-card-text>
-          <v-text-field
-              label="댓글 수정"
-              v-model="selComment.content"
-              @keyup.enter="modComment()"
-          >
-
-          </v-text-field>
-
+          <v-text-field label="댓글 수정" v-model="selComment.content" @keyup.enter="modComment()"></v-text-field>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="warning" @click="modComment()">
-            수정
-          </v-btn>
+          <v-btn color="warning" @click="modComment()">수정</v-btn>
           <v-btn color="secondary" @click="commentDialog = false">닫기</v-btn>
         </v-card-actions>
       </v-card>
-
-
     </v-dialog>
-    <v-snackbar
-      v-model="sb.act"
-    >
+    <v-snackbar v-model="sb.act">
       {{ sb.msg }}
-      <v-btn
-        :color="sb.color"
-        text
-        @click="sb.act = false"
-      >
-        닫기
-      </v-btn>
+      <v-btn :color="sb.color" text @click="sb.act = false">닫기</v-btn>
     </v-snackbar>
 
     <v-dialog v-model="dlRead" persistent max-width="500px">
@@ -248,321 +183,348 @@
         <v-card-title>
           <span class="headline">{{rd.title}}</span>
         </v-card-title>
-        <v-card-text>
-          {{rd.content}}
-        </v-card-text>
+        <v-card-text>{{rd.content}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red darken-1" text @click.native="dlRead = false">닫기</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>    
-<!-- <vue-recaptcha
+    </v-dialog>
+    <!-- <vue-recaptcha
         ref="recaptcha"
         :sitekey="$cfg.recaptchaSiteKey"
         size="invisible"
         @verify="onVerify"
         @expired="onExpired"
     >
-    </vue-recaptcha> -->
+    </vue-recaptcha>-->
   </v-container>
 </template>
 <script>
-import boardCard from '@/components/manage/boardCard'
+import boardCard from "@/components/manage/boardCard";
 
 export default {
   components: { boardCard },
-  data () {
+  data() {
     return {
-      defaultRowp:10,
+      defaultRowp: 10,
       board: {
-        name: '로딩중...',
-        rmk: '무엇?'
+        name: "로딩중...",
+        rmk: "무엇?"
       },
       articles: [],
       dialog: false,
       commentDialog: false,
       lvs: [0, 1, 2, 3],
       form: {
-        title: '',
-        content: '',
-        response: ''
+        title: "",
+        content: "",
+        response: ""
       },
-      response: '',
+      response: "",
       sb: {
         act: false,
-        msg: '',
-        color: 'error'
+        msg: "",
+        color: "error"
       },
-       articles: [],
+      articles: [],
       headers: [
-        { text: '날짜', value: '_id', sortable: true, class: 'hidden-sm-and-down' },
-        { text: '제목', value: 'title', sortable: true },
-        { text: '글쓴이', value: '_user.id', sortable: false },
-        { text: '조회수', value: 'cnt.view', sortable: true },
-        { text: '추천', value: 'cnt.like', sortable: true },
-        { text: 'Actions', value: 'actions', sortable: false },
+        {
+          text: "날짜",
+          value: "_id",
+          sortable: true,
+          class: "hidden-sm-and-down"
+        },
+        { text: "제목", value: "title", sortable: true },
+        { text: "글쓴이", value: "_user.id", sortable: false },
+        { text: "조회수", value: "cnt.view", sortable: true },
+        { text: "추천", value: "cnt.like", sortable: true },
+        { text: "Actions", value: "actions", sortable: false }
       ],
       loading: false,
       dlRead: false,
       rd: {
-        title: '',
-        content: ''
+        title: "",
+        content: ""
       },
       pagination: {
-        page:1,
-        itemsPerPage:5,
-        itemsLength:5,
-
-        
+        page: 1,
+        itemsPerPage: 5,
+        itemsLength: 5
       },
       dlMode: 0, // 0: read, 1: write, 2: modify
       selArticle: {
         _comments: []
       },
       selComment: {
-        content: ''
+        content: ""
       },
       ca: false,
       params: {
         draw: 0,
-        search: '',
+        search: "",
         skip: 0,
-        sort: '_id',
+        sort: "_id",
         order: 0,
         limit: 1
       },
       timeout: null,
       formComment: {
-        content: '',
-        response: ''
+        content: "",
+        response: ""
       }
-    }
+    };
   },
-  mounted () {
-    this.get()
+  mounted() {
+    this.get();
   },
-  
+
   methods: {
-    commentDialogOpen (c) {
-      this.commentDialog = true
-      this.selComment = c
+    commentDialogOpen(c) {
+      this.commentDialog = true;
+      this.selComment = c;
     },
-    onVerify (r) {
-      this.response = r
-      this.$refs.recaptcha.reset()
-      if (this.dlMode === 0) this.addComment()
-      else if (this.dlMode === 1) this.add()
-      else if (this.dlMode === 2) this.mod()
+    onVerify(r) {
+      this.response = r;
+      this.$refs.recaptcha.reset();
+      if (this.dlMode === 0) this.addComment();
+      else if (this.dlMode === 1) this.add();
+      else if (this.dlMode === 2) this.mod();
     },
-    onExpired () {
-      this.form.response = ''
-      this.$refs.recaptcha.reset()
+    onExpired() {
+      this.form.response = "";
+      this.$refs.recaptcha.reset();
     },
-    checkRobot () {
-      if (!this.response.length) return this.$refs.recaptcha.execute()
-      if (this.dlMode === 0) this.addComment()
-      else if (this.dlMode === 1) this.add()
-      else if (this.dlMode === 2) this.mod()
+    checkRobot() {
+      if (!this.response.length) return this.$refs.recaptcha.execute();
+      if (this.dlMode === 0) this.addComment();
+      else if (this.dlMode === 1) this.add();
+      else if (this.dlMode === 2) this.mod();
     },
-    addDialog () {
-      this.dialog = true
-      this.dlMode = 1
+    addDialog() {
+      this.dialog = true;
+      this.dlMode = 1;
       this.form = {
-        title: '',
-        content: ''
-      }
+        title: "",
+        content: ""
+      };
     },
-     modDialog () {
-      this.dlMode = 2
+    modDialog() {
+      this.dlMode = 2;
       this.form = {
         title: this.selArticle.title,
         content: this.selArticle.content
-      }
+      };
     },
-    get () {
-      this.$axios.get(`board/read/${this.$route.params.name}`)
+    get() {
+      this.$axios
+        .get(`board/read/${this.$route.params.name}`)
         .then(({ data }) => {
-          if (!data.success) throw new Error(data.msg)
-          this.board = data.d
-          this.list()
+          if (!data.success) throw new Error(data.msg);
+          this.board = data.d;
+          this.list();
         })
-        .catch((e) => {
-          this.$store.commit('pop', { msg: e.message, color: 'warning' })
-        })
+        .catch(e => {
+          this.$store.commit("pop", { msg: e.message, color: "warning" });
+        });
     },
-    add () {
-      if (!this.form.title) return this.pop('제목을 작성해주세요', 'warning')
-      if (!this.form.content) return this.pop('내용을 작성해주세요', 'warning')
-      this.$axios.post(`article/${this.board._id}`, this.form)
-        .then((r) => {
-          this.dialog = false
-          this.list()
+    add() {
+      if (!this.form.title) return this.pop("제목을 작성해주세요", "warning");
+      if (!this.form.content) return this.pop("내용을 작성해주세요", "warning");
+      this.$axios
+        .post(`article/${this.board._id}`, this.form)
+        .then(r => {
+          this.dialog = false;
+          this.list();
         })
-        .catch((e) => {
-          this.$store.commit('pop', { msg: e.message, color: 'warning' })
-        })
+        .catch(e => {
+          this.$store.commit("pop", { msg: e.message, color: "warning" });
+        });
     },
-    list () {
-      if (this.loading) return
-      if (!this.board._id) return
-      this.loading = true
-      this.params.draw ++
-      this.params.skip = this.setSkip
-      this.params.limit = this.pagination.itemsPerPage
-      this.params.sort = this.setSort
-      this.params.order = this.setOrder
+    list() {
+      if (this.loading) return;
+      if (!this.board._id) return;
+      this.loading = true;
+      this.params.draw++;
+      this.params.skip = this.setSkip;
+      this.params.limit = this.pagination.itemsPerPage;
+      this.params.sort = this.setSort;
+      this.params.order = this.setOrder;
 
-      this.$axios.get(`article/list/${this.board._id}`, { params: this.params })
+      this.$axios
+        .get(`article/list/${this.board._id}`, { params: this.params })
         .then(({ data }) => {
-          if (!data.success) throw new Error(data.msg)
-          this.pagination.itemsLength = data.t
-          this.articles = data.ds
-          this.loading = false
-
+          if (!data.success) throw new Error(data.msg);
+          this.pagination.itemsLength = data.t;
+          this.articles = data.ds;
+          this.loading = false;
         })
-        .catch((e) => {
-          this.$store.commit('pop', { msg: e.message, color: 'warning' })
-          this.loading = false
-        })
+        .catch(e => {
+          this.$store.commit("pop", { msg: e.message, color: "warning" });
+          this.loading = false;
+        });
     },
-    delay () {
-      clearTimeout(this.timeout)
+    delay() {
+      clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
-        this.list()
-      }, 1000)
+        this.list();
+      }, 1000);
     },
-    addComment () {
-      this.formComment.response = this.response
-      this.$axios.post(`comment/${this.selArticle._id}`, this.formComment)
+    addComment() {
+      this.formComment.response = this.response;
+      this.$axios
+        .post(`comment/${this.selArticle._id}`, this.formComment)
         .then(({ data }) => {
-          if (!data.success) throw new Error(data.msg)
-          this.formComment.content = ''
-          this.read(this.selArticle)
+          if (!data.success) throw new Error(data.msg);
+          this.formComment.content = "";
+          this.read(this.selArticle);
           // this.list()
         })
-        .catch((e) => {
-          if (!e.response) this.$store.commit('pop', { msg: e.message, color: 'warning' })
-        })
+        .catch(e => {
+          if (!e.response)
+            this.$store.commit("pop", { msg: e.message, color: "warning" });
+        });
     },
-    delComment (cmt) {
-      this.$axios.delete(`comment/${cmt._id}`)
+    delComment(cmt) {
+      this.$axios
+        .delete(`comment/${cmt._id}`)
         .then(({ data }) => {
-          if (!data.success) throw new Error(data.msg)
-          this.read(this.selArticle)
+          if (!data.success) throw new Error(data.msg);
+          this.read(this.selArticle);
         })
-        .catch((e) => {
-          if (!e.response) this.$store.commit('pop', { msg: e.message, color: 'warning' })
-        })
+        .catch(e => {
+          if (!e.response)
+            this.$store.commit("pop", { msg: e.message, color: "warning" });
+        });
     },
-    modComment () {
-      if (!this.selComment.content) return this.$store.commit('pop', { msg: '내용을 작성해주세요', color: 'warning' })
-      this.commentDialog = false
-      this.$axios.put(`comment/${this.selComment._id}`, { content: this.selComment.content })
+    modComment() {
+      if (!this.selComment.content)
+        return this.$store.commit("pop", {
+          msg: "내용을 작성해주세요",
+          color: "warning"
+        });
+      this.commentDialog = false;
+      this.$axios
+        .put(`comment/${this.selComment._id}`, {
+          content: this.selComment.content
+        })
         .then(({ data }) => {
-          if (!data.success) throw new Error(data.msg)
-          this.read(this.selArticle)
+          if (!data.success) throw new Error(data.msg);
+          this.read(this.selArticle);
         })
-        .catch((e) => {
-          if (!e.response) this.$store.commit('pop', { msg: e.message, color: 'warning' })
-        })
+        .catch(e => {
+          if (!e.response)
+            this.$store.commit("pop", { msg: e.message, color: "warning" });
+        });
     },
-    read (atc) {
-      this.selArticle = atc
-      this.loading = true
-      this.$axios.get(`article/read/${atc._id}`)
+    read(atc) {
+      this.selArticle = atc;
+      this.loading = true;
+      this.$axios
+        .get(`article/read/${atc._id}`)
         .then(({ data }) => {
-          if (!data.success) throw new Error(data.msg)
-          this.dlMode = 0
-          this.dialog = true
-          this.selArticle.content = data.d.content
-          this.selArticle.cnt.view = data.d.cnt.view
+          if (!data.success) throw new Error(data.msg);
+          this.dlMode = 0;
+          this.dialog = true;
+          this.selArticle.content = data.d.content;
+          this.selArticle.cnt.view = data.d.cnt.view;
           // data.d._comments.forEach(v => { v.mod = false })
-          this.selArticle._comments = data.d._comments
-          this.loading = false
+          this.selArticle._comments = data.d._comments;
+          this.loading = false;
         })
-        .catch((e) => {
-          if (!e.response) this.$store.commit('pop', { msg: e.message, color: 'warning' })
-          this.loading = false
-        })
+        .catch(e => {
+          if (!e.response)
+            this.$store.commit("pop", { msg: e.message, color: "warning" });
+          this.loading = false;
+        });
     },
-    mod () {
-      if (!this.form.title) return this.pop('제목을 작성해주세요', 'warning')
-      if (!this.form.content) return this.pop('내용을 작성해주세요', 'warning')
-      if (this.selArticle.title === this.form.title && this.selArticle.content === this.form.content)
-        return this.pop('변경된 내용이 없습니다', 'warning')
-      this.$axios.put(`article/${this.selArticle._id}`, this.form)
+    mod() {
+      if (!this.form.title) return this.pop("제목을 작성해주세요", "warning");
+      if (!this.form.content) return this.pop("내용을 작성해주세요", "warning");
+      if (
+        this.selArticle.title === this.form.title &&
+        this.selArticle.content === this.form.content
+      )
+        return this.pop("변경된 내용이 없습니다", "warning");
+      this.$axios
+        .put(`article/${this.selArticle._id}`, this.form)
         .then(({ data }) => {
-          this.dialog = false
-          if (!data.success) throw new Error(data.msg)
-          this.selArticle.title = data.d.title
-          this.selArticle.content = data.d.content
+          this.dialog = false;
+          if (!data.success) throw new Error(data.msg);
+          this.selArticle.title = data.d.title;
+          this.selArticle.content = data.d.content;
           // this.list()
         })
-        .catch((e) => {
-          this.$store.commit('pop', { msg: e.message, color: 'warning' })
-        })
+        .catch(e => {
+          this.$store.commit("pop", { msg: e.message, color: "warning" });
+        });
     },
-     del () {
-      this.$axios.delete(`article/${this.selArticle._id}`)
+    del() {
+      this.$axios
+        .delete(`article/${this.selArticle._id}`)
         .then(({ data }) => {
-          this.dialog = false
-          if (!data.success) throw new Error(data.msg)
-          this.list()
+          this.dialog = false;
+          if (!data.success) throw new Error(data.msg);
+          this.list();
         })
-        .catch((e) => {
-          this.$store.commit('pop', { msg: e.message, color: 'warning' })
-        })
+        .catch(e => {
+          this.$store.commit("pop", { msg: e.message, color: "warning" });
+        });
     },
-    pop (m, c) {
-      this.sb.act = true
-      this.sb.msg = m
-      this.sb.color = c
+    pop(m, c) {
+      this.sb.act = true;
+      this.sb.msg = m;
+      this.sb.color = c;
     },
-    id2date (val) {
-      if (!val) return '잘못된 시간 정보'
-      return new Date(parseInt(val.substring(0, 8), 16) * 1000).toLocaleString()
+    id2date(val) {
+      if (!val) return "잘못된 시간 정보";
+      return new Date(
+        parseInt(val.substring(0, 8), 16) * 1000
+      ).toLocaleString();
     }
   },
-  
+
   watch: {
     pagination: {
       handler() {
-        this.list()
+        this.list();
       },
       deep: true
     },
-    'params.search': {
+    "params.search": {
       handler() {
-        this.delay()
+        this.delay();
         // this.list()
       }
     },
-    '$route' (to, from) {
-      console.log(to.path, from.path)
-      this.get()
+    $route(to, from) {
+      console.log(to.path, from.path);
+      this.get();
     } // 같은 컴포넌트로 여러개의 게시판을 렌더링 하기 때문에 변경 사항이 없다고 판단한다. 하여 watch옵션으로 $route를 감시하여 변화를 주어야 한다.
   },
   computed: {
-    setSkip () {
-      if (this.pagination.page <= 0) return 0
-      return (this.pagination.page - 1) * this.pagination.itemsPerPage
+    setSkip() {
+      if (this.pagination.page <= 0) return 0;
+      return (this.pagination.page - 1) * this.pagination.itemsPerPage;
     },
-    setSort () {
-      let sort = this.pagination.sortBy
-      if (this.pagination.sortBy) sort = '_id'
-      return sort
+    setSort() {
+      let sort = this.pagination.sortBy;
+      if (this.pagination.sortBy) sort = "_id";
+      return sort;
     },
-    setOrder () {
-      return this.pagination.sortDesc[0] === true ? 1 : -1
+    setOrder() {
+      return this.pagination.sortDesc[0] === true ? 1 : -1;
     },
-    pages () {
-
-      if (this.pagination.itemsPerPage == null ||
+    pages() {
+      if (
+        this.pagination.itemsPerPage == null ||
         this.pagination.itemsLength == null
-      ) return 0
-      return Math.ceil(this.pagination.itemsLength / this.pagination.itemsPerPage)
-    },
-  },
-}
+      )
+        return 0;
+      return Math.ceil(
+        this.pagination.itemsLength / this.pagination.itemsPerPage
+      );
+    }
+  }
+};
 </script>

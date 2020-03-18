@@ -1,0 +1,2 @@
+firebase deploy를 하면 처음에 firebase init을 할 때 지정했던 폴더가 firebase server로 올라감,
+즉 프론트 서버를 build시킨 dist폴더를 firebase deploy로 올리면 firebase에 내가 만든 프로젝트를 쉽게 올릴 수 있음
