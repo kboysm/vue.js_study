@@ -94,8 +94,16 @@
     <v-dialog v-model="dialog" persistent max-width="500px" :fullscreen="$vuetify.breakpoint.xs">
       <v-card v-if="!dlMode">
         <v-card-title>
-          <span class="headline">{{selArticle.title}}</span>
+          <span class="headline">제목: {{selArticle.title}}</span>
+          <v-spacer></v-spacer>
+          <v-btn
+              icon
+              @click="dialog=!dialog"
+          >
+            <v-icon>mdi mdi-format-clear</v-icon>
+          </v-btn>
         </v-card-title>
+        <v-divider></v-divider>
         <v-card-text>
           <!-- {{selArticle.content}} -->
           <viewer :value="selArticle.content" />
@@ -115,40 +123,112 @@
             </v-alert>
           </v-card-text>
         </v-card-text>
+        <v-divider></v-divider>
+
+
+        <v-list two-line v-for="comment in selArticle._comments" :key="comment._id">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>{{comment.content}}</v-list-item-title>
+              <v-list-item-sub-title>{{comment._user ? comment._user.id : '손님'}}</v-list-item-sub-title>
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-btn
+                  icon
+                  ripple
+                  @click="commentDialogOpen(comment)"
+              >
+                <v-icon color="warning lighten-1">
+                  create
+                </v-icon>
+              </v-btn>
+
+            </v-list-item-action>
+            <v-list-item-action>
+              <v-btn
+                  icon
+                  ripple
+                  @click="delComment(comment)"
+              >
+                <v-icon color="error">
+                  clear
+                </v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+          <v-divider></v-divider>
+        </v-list>
+        <v-card-text>
+          <v-text-field
+              label="댓글 작성"
+              v-model="formComment.content"
+              append-icon="message"
+              @keyup.enter="checkRobot"
+              @click:append="checkRobot"
+          >
+
+          </v-text-field>
+        </v-card-text>
+
+
       </v-card>
-      <v-card v-else>
+      <v-card light v-else>
         <v-card-title>
           <span class="headline">글 {{(dlMode === 1) ? '작성' : '수정'}}</span>
+          <v-spacer></v-spacer>
+          <v-btn
+              icon
+              @click="dialog=!dialog"
+          >
+            <v-icon>clear</v-icon>
+          </v-btn>
         </v-card-title>
+        <v-divider></v-divider>
         <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12>
-                <v-text-field
-                  label="제목"
-                  persistent-hint
-                  required
-                  v-model="form.title"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <!-- <v-textarea
-                  label="내용"
-                  persistent-hint
-                  required
-                  v-model="form.content"
-                ></v-textarea> -->
-                <editor v-model="form.content"/>
-              </v-flex>
-            </v-layout>
-          </v-container>
+          <v-form>
+            <v-text-field
+              label="제목"
+              persistent-hint
+              required
+              v-model="form.title"
+            ></v-text-field>
+            <!-- <v-textarea
+              label="내용"
+              persistent-hint
+              required
+              v-model="form.content"
+            ></v-textarea> -->
+            <editor v-model="form.content"/>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="(dlMode === 1) ? add() : mod()">확인</v-btn>
-          <v-btn color="red darken-1" text @click.native="dialog = false">취소</v-btn>
+          <v-btn color="green darken-1" flat @click="checkRobot()">확인</v-btn>
+          <v-btn color="red darken-1" flat @click.native="dialog = false">취소</v-btn>
         </v-card-actions>
       </v-card>
+    </v-dialog>
+    <v-dialog width="400" v-model="commentDialog">
+      <v-card>
+        <v-card-text>
+          <v-text-field
+              label="댓글 수정"
+              v-model="selComment.content"
+              @keyup.enter="modComment()"
+          >
+
+          </v-text-field>
+
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="warning" @click="modComment()">
+            수정
+          </v-btn>
+          <v-btn color="secondary" @click="commentDialog = false">닫기</v-btn>
+        </v-card-actions>
+      </v-card>
+
+
     </v-dialog>
     <v-snackbar
       v-model="sb.act"
@@ -177,7 +257,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>    
-
+<!-- <vue-recaptcha
+        ref="recaptcha"
+        :sitekey="$cfg.recaptchaSiteKey"
+        size="invisible"
+        @verify="onVerify"
+        @expired="onExpired"
+    >
+    </vue-recaptcha> -->
   </v-container>
 </template>
 <script>
@@ -194,11 +281,14 @@ export default {
       },
       articles: [],
       dialog: false,
+      commentDialog: false,
       lvs: [0, 1, 2, 3],
       form: {
         title: '',
-        content: ''
+        content: '',
+        response: ''
       },
+      response: '',
       sb: {
         act: false,
         msg: '',
@@ -227,7 +317,12 @@ export default {
         
       },
       dlMode: 0, // 0: read, 1: write, 2: modify
-      selArticle: {},
+      selArticle: {
+        _comments: []
+      },
+      selComment: {
+        content: ''
+      },
       ca: false,
       params: {
         draw: 0,
@@ -237,7 +332,11 @@ export default {
         order: 0,
         limit: 1
       },
-      timeout: null
+      timeout: null,
+      formComment: {
+        content: '',
+        response: ''
+      }
     }
   },
   mounted () {
@@ -245,6 +344,27 @@ export default {
   },
   
   methods: {
+    commentDialogOpen (c) {
+      this.commentDialog = true
+      this.selComment = c
+    },
+    onVerify (r) {
+      this.response = r
+      this.$refs.recaptcha.reset()
+      if (this.dlMode === 0) this.addComment()
+      else if (this.dlMode === 1) this.add()
+      else if (this.dlMode === 2) this.mod()
+    },
+    onExpired () {
+      this.form.response = ''
+      this.$refs.recaptcha.reset()
+    },
+    checkRobot () {
+      if (!this.response.length) return this.$refs.recaptcha.execute()
+      if (this.dlMode === 0) this.addComment()
+      else if (this.dlMode === 1) this.add()
+      else if (this.dlMode === 2) this.mod()
+    },
     addDialog () {
       this.dialog = true
       this.dlMode = 1
@@ -312,6 +432,41 @@ export default {
         this.list()
       }, 1000)
     },
+    addComment () {
+      this.formComment.response = this.response
+      this.$axios.post(`comment/${this.selArticle._id}`, this.formComment)
+        .then(({ data }) => {
+          if (!data.success) throw new Error(data.msg)
+          this.formComment.content = ''
+          this.read(this.selArticle)
+          // this.list()
+        })
+        .catch((e) => {
+          if (!e.response) this.$store.commit('pop', { msg: e.message, color: 'warning' })
+        })
+    },
+    delComment (cmt) {
+      this.$axios.delete(`comment/${cmt._id}`)
+        .then(({ data }) => {
+          if (!data.success) throw new Error(data.msg)
+          this.read(this.selArticle)
+        })
+        .catch((e) => {
+          if (!e.response) this.$store.commit('pop', { msg: e.message, color: 'warning' })
+        })
+    },
+    modComment () {
+      if (!this.selComment.content) return this.$store.commit('pop', { msg: '내용을 작성해주세요', color: 'warning' })
+      this.commentDialog = false
+      this.$axios.put(`comment/${this.selComment._id}`, { content: this.selComment.content })
+        .then(({ data }) => {
+          if (!data.success) throw new Error(data.msg)
+          this.read(this.selArticle)
+        })
+        .catch((e) => {
+          if (!e.response) this.$store.commit('pop', { msg: e.message, color: 'warning' })
+        })
+    },
     read (atc) {
       this.selArticle = atc
       this.loading = true
@@ -322,10 +477,12 @@ export default {
           this.dialog = true
           this.selArticle.content = data.d.content
           this.selArticle.cnt.view = data.d.cnt.view
+          // data.d._comments.forEach(v => { v.mod = false })
+          this.selArticle._comments = data.d._comments
           this.loading = false
         })
         .catch((e) => {
-          this.$store.commit('pop', { msg: e.message, color: 'warning' })
+          if (!e.response) this.$store.commit('pop', { msg: e.message, color: 'warning' })
           this.loading = false
         })
     },
