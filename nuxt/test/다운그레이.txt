@@ -1,5 +1,0 @@
-다운그레이 뷰티파이 하는법
-
-vue add vuetify@다운그레이 버전
-
-vue invoke vuetify 설치
