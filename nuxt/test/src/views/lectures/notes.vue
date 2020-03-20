@@ -27,9 +27,11 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>{{ props.item.content }}</v-card-text>
+            <v-card-text>{{ props.item.id }}</v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="put(props.item)">text</v-btn>
+              <v-btn @click="put(props.item.id)">수정</v-btn>
+              <v-btn @click="del(props.item.id)">삭제</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -48,19 +50,65 @@ export default {
     title: "",
     content: ""
   }),
-  mounted() {},
+  mounted() {
+    this.get()
+  },
   methods: {
-    post() {
-      this.items.push({
-        title: this.title,
-        content: this.content
-      })
+    async post() {
+      //   this.items.push({
+      //     title: this.title,
+      //     content: this.content
+      //   })
+      const r = await this.$firebase
+        .firestore()
+        .collection("notes")
+        .add({
+          title: this.title,
+          content: this.content
+        })
+      console.log(r)
       this.title = ""
       this.content = ""
+      await this.get()
     },
-    get() {},
-    put() {},
-    del() {}
+    async get() {
+      const snapshot = await this.$firebase
+        .firestore()
+        .collection("notes")
+        .get()
+      this.items = []
+
+      snapshot.forEach(v => {
+        const { title, content } = v.data()
+        console.log(v.id)
+        this.items.push({
+          title,
+          content,
+          id: v.id
+        })
+      })
+    },
+    async put(id) {
+      const r = await this.$firebase
+        .firestore()
+        .collection("notes")
+        .doc(id)
+        .set({
+          title: this.title,
+          content: this.content
+        })
+      await this.get()
+      console.log(r)
+    },
+    async del(id) {
+      const r = await this.$firebase
+        .firestore()
+        .collection("notes")
+        .doc(id)
+        .delete()
+      await this.get()
+      console.log(r)
+    }
   }
 }
 </script>
