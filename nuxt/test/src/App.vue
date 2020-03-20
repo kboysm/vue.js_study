@@ -21,11 +21,7 @@
             </v-list-tile>
           </template>
 
-          <v-list-tile
-            v-for="subItem in item.subItems"
-            :key="subItem.title"
-            :to="subItem.to"
-          >
+          <v-list-tile v-for="subItem in item.subItems" :key="subItem.title" :to="subItem.to">
             <v-list-tile-content>
               <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
             </v-list-tile-content>
@@ -47,7 +43,7 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-btn>
           </v-list-tile-action>
-        </v-list-tile> -->
+        </v-list-tile>-->
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="lime">
@@ -117,12 +113,12 @@ export default {
           ]
         }
       ]
-    };
+    }
   },
   methods: {
     test() {
-      this.drawer = !this.drawer;
+      this.drawer = !this.drawer
     }
   }
-};
+}
 </script>
