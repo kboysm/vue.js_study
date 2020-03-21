@@ -63,11 +63,16 @@ export default {
     }
   },
   methods: {
-    create() {
-      this.$axios
-        .post("http://localhost:5001/test-vf-lsm-ae9ca/us-central1/test")
-        .then(r => (this.textCreate = r.data))
-        .catch(e => console.error(e.message))
+    async create() {
+      // this.$toasted.show("error~")
+      // this.$axios
+      //   .post("http://localhost:5001/test-vf-lsm-ae9ca/us-central1/test")
+      //   .then(r => (this.textCreate = r.data))
+      //   .catch(e => console.error(e.message))
+      const r = await this.$axios.post(
+        "http://localhost:5001/test-vf-lsm-ae9ca/us-central1/test/sdf/sdf"
+      )
+      this.textCreate = r.data
     },
     read() {
       this.$axios
