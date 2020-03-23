@@ -1,7 +1,11 @@
+
 const app = require('express')()
 const cors = require('cors')
 require('express-async-errors')
 app.use(cors())
+
+app.use(require('../middlewares/vertifyToken'))
+
 app.post('/', async (req, res) => {
     res.send('post ok')
 })
