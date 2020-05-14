@@ -1,8 +1,4 @@
 ##nemv3
-<<<<<<< HEAD
-memi님의 유튜브를 보고 구버전의 강의를 신버전으로 바꿔서 제작
-이미지를 넣을 예정
-=======
 
 vue.js+node.js를 사용하여 관리자 페이지를 제작하는 프로젝트
 
@@ -12,4 +8,4 @@ vue.js+node.js를 사용하여 관리자 페이지를 제작하는 프로젝트
 
 출처: https://www.youtube.com/watch?v=wBqc1WIUjoI&list=PLjpTKic1SLZu43cFS3YQIKoD2vObq-DVx
 
->>>>>>> 5054419e572c2f7209b6f4a6f7f8643d05c82b19
+
