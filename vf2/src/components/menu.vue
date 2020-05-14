@@ -9,21 +9,61 @@
 
     <v-divider></v-divider>
 
-    <v-list dense nav>
-      <v-list-item v-for="item in items" :key="item.title" link>
-        <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-item-icon>
+    <v-list>
+      <v-list-group
+        v-for="(item , i) in items"
+        :key="i"
+        v-model="item.active"
+        :prepend-icon="item.icon"
+        no-action
+      >
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title"></v-list-item-title>
+          </v-list-item-content>
+        </template>
 
-        <v-list-item-content>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+        <v-list-item v-for="subItem in item.subItems" :key="subItem.title" :to="subItem.to">
+          <v-list-item-content>
+            <v-list-item-title v-text="subItem.title"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group>
     </v-list>
   </v-navigation-drawer>
 </template>
 <script>
 export default {
-  props: ["drawer", "items"]
+  props: ["drawer"],
+  data() {
+    return {
+      items: [
+        {
+          title: "home",
+          icon: "mdi-home",
+          subItems: [
+            { title: "Dashboard", to: "/" },
+            {
+              title: "About",
+              to: "/about"
+            }
+          ],
+          to: "/"
+        },
+        {
+          title: "about",
+          active: true,
+          icon: "mdi-account",
+          subItems: [
+            {
+              title: "xxx",
+              to: "/xxx"
+            }
+          ]
+        },
+        { title: "Sub", icon: "mdi-account-alert" }
+      ]
+    }
+  }
 }
 </script>

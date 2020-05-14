@@ -8,7 +8,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </v-app-bar>
-    <site-menu :items="items" :drawer="drawer" />
+    <site-menu :drawer="drawer" />
     <v-content>
       <router-view></router-view>
     </v-content>
@@ -29,11 +29,7 @@ export default {
       footer: "LSM Footer",
       title: "Components Title",
       drawer: false,
-      items: [
-        { title: "Dashboard", icon: "mdi-view-dashboard" },
-        { title: "Photos", icon: "mdi-image" },
-        { title: "About", icon: "mdi-help-box" }
-      ],
+
       right: null
     }
   }
