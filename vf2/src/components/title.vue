@@ -38,13 +38,11 @@ export default {
     },
     async save() {
       try {
-        this.$firebase
+        await this.$firebase
           .database()
           .ref()
           .child("site")
           .update({ title: this.text })
-      } catch (e) {
-        console.log(e.message)
       } finally {
         this.dialog = false
       }
