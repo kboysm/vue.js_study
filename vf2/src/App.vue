@@ -3,6 +3,15 @@
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
       <site-title :title="title" />
+      <v-btn icon @click="save">
+        <v-icon>mdi-check</v-icon>
+      </v-btn>
+      <v-btn icon @click="read">
+        <v-icon>mdi-numeric</v-icon>
+      </v-btn>
+      <v-btn icon @click="readOne">
+        <v-icon>mdi-one-up</v-icon>
+      </v-btn>
       <v-spacer></v-spacer>
       <v-btn icon to="/about">
         <v-icon>mdi-magnify</v-icon>
@@ -31,6 +40,44 @@ export default {
       drawer: false,
 
       right: null
+    }
+  },
+  mounted() {
+    console.log(this.$firebase)
+  },
+  methods: {
+    save() {
+      console.log("save@@@")
+      this.$firebase
+        .database()
+        .ref()
+        .child("abcd")
+        .set({
+          title: "real time database",
+          text: "Vue Study"
+        })
+    },
+    read() {
+      //이녀석은 firebase의 real time database의 값이 바뀔때마다 자동으로 실행된다 즉,firebase측 데이터베이스를 수정하면 에플리케이션의 내용이 자동으로 바뀌게 할 수 있다.
+      console.log("read@@@")
+      this.$firebase
+        .database()
+        .ref()
+        .child("abcd")
+        .on("value", sn => {
+          console.log(sn)
+          console.log(sn.val())
+        })
+    },
+    async readOne() {
+      //이녀석은 일회성으로 firebase real time database를 수정하여도 즉각 반영 x 클라이언트측에서 요청시에만 데이타를 받아옴
+      console.log("read@@@")
+      const sn = await this.$firebase
+        .database()
+        .ref()
+        .child("abcd")
+        .once("value")
+      console.log(sn.val())
     }
   }
 }
