@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
-      <site-title :title="title" />
+      <site-title :title="site.title" />
       <v-btn icon @click="save">
         <v-icon>mdi-check</v-icon>
       </v-btn>
@@ -17,11 +17,11 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </v-app-bar>
-    <site-menu :drawer="drawer" />
+    <site-menu :drawer="drawer" :items="site.menu" />
     <v-content>
       <router-view></router-view>
     </v-content>
-    <site-footer :footer="footer" />
+    <site-footer :footer="site.footer" />
   </v-app>
 </template>
 
@@ -35,17 +35,39 @@ export default {
 
   data() {
     return {
-      footer: "LSM Footer",
-      title: "Components Title",
+      site: { menu: [], footer: "LSM Footer", title: "Components Title" },
       drawer: false,
 
       right: null
     }
   },
-  mounted() {
-    console.log(this.$firebase)
+  created() {
+    this.subscribe()
   },
   methods: {
+    subscribe() {
+      this.$firebase
+        .database()
+        .ref()
+        .child("site")
+        .on(
+          "value",
+          sn => {
+            const v = sn.val()
+            if (!v) {
+              this.$firebase
+                .database()
+                .ref()
+                .child("site")
+                .set(this.site)
+            }
+            this.site = v
+          },
+          e => {
+            console.log(e.message)
+          }
+        )
+    },
     save() {
       console.log("save@@@")
       this.$firebase
