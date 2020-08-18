@@ -3,15 +3,15 @@ const cfg = require('../../config/conf')
 const crypto = require('crypto')
 mongoose.set('useCreateIndex', true)
 const userSchema = new mongoose.Schema({
-    name: { type: String, default: '' },
-    age: { type: Number, default: 1 },
-    id: { type: String, default: '', unique: true, index: true },
-    pwd: { type: String, default: '' },
-    lv: { type: Number, default: 2 }, //add
-    inCnt: { type: Number, default: 0 }, //add
-    retry: { type: Number, default: 0 },
-    img: { type: String, default: '' }
-  })
+  name: { type: String, default: '' },
+  age: { type: Number, default: 1 },
+  id: { type: String, default: '', unique: true, index: true },
+  pwd: { type: String, default: '' },
+  lv: { type: Number, default: 2 }, //add
+  inCnt: { type: Number, default: 0 }, //add
+  retry: { type: Number, default: 0 },
+  img: { type: String, default: '' }
+})
 
 const User = mongoose.model('User', userSchema)
 // User.collection.dropIndexes({ name: 1})
