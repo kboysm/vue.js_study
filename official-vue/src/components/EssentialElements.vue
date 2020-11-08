@@ -23,12 +23,18 @@ export default {
   props: ["testData"],
   data() {
     return {
-      firstName: "Foo",
-      lastName: "Bar",
+      testData2: "test",
+      testTrig: 2,
     }
   },
   mounted() {
-    this.fullName = "limsangmin"
+    if (this.testTrig === 0) this.fullName = "limsangmin"
+    else if (this.testTrig === 1) this.fullName = "yayaya"
+    else this.fullName = "default Value"
+
+    /*
+    사용자의 요청으로 기본값과 가끔 발생하는 기본값 아주 특수한 경우에 발생하는 기본값을 나눠서 설정 할 수 있을거 같음
+    */
   },
   computed: {
     defaultComputed() {
@@ -37,13 +43,11 @@ export default {
     fullName: {
       // getter
       get: function () {
-        return this.firstName + " " + this.lastName
+        return this.testData2
       },
       // setter
       set: function (newValue) {
-        var names = newValue.split(" ")
-        this.firstName = names[0]
-        this.lastName = names[names.length - 1]
+        this.testData2 = newValue
       },
     },
   },
