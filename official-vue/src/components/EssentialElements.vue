@@ -16,6 +16,7 @@
       computed setter 테스트 : {{fullName}}
       <br />
       <button @click.once="eventTestMethod('eventTest',$event)">eventTest</button>
+      <br />2020-11-09 회사에서는 컴포넌트 DOM 템플릿부터 공부하기
     </div>
   </div>
 </template>
