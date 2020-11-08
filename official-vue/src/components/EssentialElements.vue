@@ -13,7 +13,9 @@
       <br />watch는 데이터를 지정하고 그 데이터가 바뀌면 이런 함수를 실행하라는 방식으로 소프트웨어 공학에서 이야기하는 '명령형 프로그래밍'방식
       <br />computed 속성은 계산해야 하는 목표 데이터를 정의하는 방식으로 소프트웨어 공학에서 이야기하는 '선언형 프로그래밍 방식'
       <br />
-      {{fullName}}
+      computed setter 테스트 : {{fullName}}
+      <br />
+      <button @click.once="eventTestMethod('eventTest',$event)">eventTest</button>
     </div>
   </div>
 </template>
@@ -26,6 +28,11 @@ export default {
       testData2: "test",
       testTrig: 2,
     }
+  },
+  methods: {
+    eventTestMethod(el, event) {
+      alert(el)
+    },
   },
   mounted() {
     if (this.testTrig === 0) this.fullName = "limsangmin"
