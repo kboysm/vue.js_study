@@ -1,13 +1,20 @@
 <template>
   <div class="about">
-    <essential-elements v-bind:testData="testData" :numberTest.sync="numberTest" :objectTest="objectTest" limsm="true"></essential-elements>
+    <essential-elements ref="testRef" style="display: none" v-bind:testData="testData" :numberTest.sync="numberTest" :objectTest="objectTest" limsm="true"></essential-elements>
+    <slot-test>
+      <template slot-scope="props">
+        <span>hello from parent</span>
+        <span>{{ props.testSlotData }}</span>
+      </template>
+    </slot-test>
   </div>
 </template>
 <script>
 import EssentialElements from "@/components/EssentialElements"
+import SlotTest from "@/components/SlotTest"
 export default {
   components: {
-    EssentialElements,
+    EssentialElements,SlotTest
   },
   data() {
     return {
@@ -20,5 +27,8 @@ export default {
       }
     }
   },
+  mounted() {
+    console.log(this.$refs.testRef)
+  }
 }
 </script>
