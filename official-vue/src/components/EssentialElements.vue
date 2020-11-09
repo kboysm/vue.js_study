@@ -16,14 +16,40 @@
       computed setter 테스트 : {{fullName}}
       <br />
       <button @click.once="eventTestMethod('eventTest',$event)">eventTest</button>
-      <br />2020-11-09 회사에서는 컴포넌트 DOM 템플릿부터 공부하기
+      <br />2020-11-09 회사에서는 컴포넌트 DOM 템플릿부터 공부하기 <br>
+      부모 컴포넌트에서 숫자로 넘기면 숫자로 문자로 넘기면 문자로 받는다 : {{typeof numberTest }}
+      <br>object를 넘기지 않으면 default로 적용한 내용이 화면에 출력 , 그러나 object를 넘기고 object의 data field를 넘기지 않는 경우 default함수가 작동하지 않는다.
+      <br> 즉 {}같은 빈 객체를 넘길 경우이다.{{objectTest}}
+      <br> 부모 컴포넌트에서 넘긴 데이터.sync를 붙여서 보냈을 경우 하위컴포넌트에서 this.$emit으로 update:변수명 이벤트를 보내면 부모컴포넌트에서 on으로 받지 않아도 됌
+      <br>{{numberTest}}
     </div>
   </div>
 </template>
 <script>
 export default {
   name: "essential-elements",
-  props: ["testData"],
+  // props: ["testData","numberTest"],
+  props:{
+    testData:{
+      type:String,
+      required:true
+    },
+    numberTest:{
+      type:Number,
+      validator:  value=>
+       value > 0
+    },
+    objectTest:{
+      type:Object,
+      default: ()=> {
+        return{
+          test_0:'default',
+          test_1:100,
+          test_2:'default real test'
+        }
+      }
+    }
+  },
   data() {
     return {
       testData2: "test",
@@ -39,7 +65,7 @@ export default {
     if (this.testTrig === 0) this.fullName = "limsangmin"
     else if (this.testTrig === 1) this.fullName = "yayaya"
     else this.fullName = "default Value"
-
+    this.$emit('update:numberTest', 10) //default는 1이였으나 10으로 변경하라는 요청
     /*
     사용자의 요청으로 기본값과 가끔 발생하는 기본값 아주 특수한 경우에 발생하는 기본값을 나눠서 설정 할 수 있을거 같음
     */
