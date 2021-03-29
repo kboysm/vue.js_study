@@ -1,19 +1,4 @@
 # vue3
 
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## vue2와 vue3 차이
+루트요소가 한개만 있어야한다 - vue2 , 루트 요소가 여러개 존재 가능하다 - vue3
