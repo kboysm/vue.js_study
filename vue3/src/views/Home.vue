@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import getPosts from '../composables/getPosts'
 import PostList from '../components/postList.vue'
 import { ref, reactive, computed, watch, watchEffect } from 'vue'
 export default {
@@ -60,22 +61,7 @@ export default {
       
     // }
     const showPosts = ref(true)
-    const posts = ref([
-            
-        ])
-    const error = ref(null)
-    const load = async () => {
-      try {
-        let data =await fetch('http://localhost:3000/posts')
-        if (!data.ok) {
-          throw Error('no data available')
-        }
-        posts.value = await data.json()
-      }catch ( err ) {
-        error.value = err.message
-        console.log(error.value)
-      }
-    }
+    const { posts , error , load } = getPosts()
     load()
     return {
       // name , age , handleClick , p // key:value
@@ -83,7 +69,7 @@ export default {
       // search,
       // matchingNames,
       // handleClick
-      posts , showPosts
+      posts , showPosts ,error
     }
   }
 }

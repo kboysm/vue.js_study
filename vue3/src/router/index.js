@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import homeRoute from './homeRoute.js'
-import todoRoute from './todoRoute.js'
+import detailRoute from './detailRoute.js'
 
 const routes = [
- ...homeRoute , ...todoRoute
+ ...homeRoute , ...detailRoute
 ]
 
 const router = createRouter({
