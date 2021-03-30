@@ -9,6 +9,7 @@
 
 <script>
 import SinglePost from './SinglePost.vue'
+import { onMounted, onUnmounted, onUpdated } from 'vue'
 export default {
     props: ['posts'],
     components: {
@@ -16,6 +17,19 @@ export default {
     },
     setup(props) {
         console.log(props)
+        onMounted(() => {
+            console.log('component onMounted ')
+        })
+        onUnmounted(() => {
+            console.log('component onUnMounted ')
+        })
+        onUpdated(() => {
+            console.log('component onUpdated')
+        })
+
+        return {
+            
+        }
     }
 }
 </script>

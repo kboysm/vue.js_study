@@ -11,7 +11,13 @@
     <div v-for="name in matchingNames" :key="name">{{ name }}</div>
     <button @click="handleClick">stop watching</button> -->
     <h1>home</h1>
-    <PostList :posts="posts" />
+    <div v-if="error">{ error }}</div>
+    <div v-if="posts.length">
+      <PostList v-if="showPosts" :posts="posts" />
+      <button @click="showPosts = !showPosts">toggle posts</button>
+      <button @click="posts.pop()">delete a post</button>
+    </div>
+    <div v-else>Loading...</div>
   </div>
 </template>
 
@@ -53,17 +59,31 @@ export default {
     //   stopWatchEffect()
       
     // }
+    const showPosts = ref(true)
     const posts = ref([
-            { title: 'welcome to the blog' , body: 'Lorem ipsum aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', id: 1 },
-            { title: 'top 5 Css tips' , body: ' Lorem ipsum' , id: 2 },
+            
         ])
+    const error = ref(null)
+    const load = async () => {
+      try {
+        let data =await fetch('http://localhost:3000/posts')
+        if (!data.ok) {
+          throw Error('no data available')
+        }
+        posts.value = await data.json()
+      }catch ( err ) {
+        error.value = err.message
+        console.log(error.value)
+      }
+    }
+    load()
     return {
       // name , age , handleClick , p // key:value
       // names,
       // search,
       // matchingNames,
       // handleClick
-      posts
+      posts , showPosts
     }
   }
 }
