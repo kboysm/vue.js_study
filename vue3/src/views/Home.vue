@@ -5,18 +5,24 @@
     <button @click="handleClick">click me</button>
     <button @click="age++">age plus</button>
     <input type="text" v-model="name"> -->
-    <input type="text" v-model="search">
+    <!-- <input type="text" v-model="search">
     <p>search term - {{ search }}</p>
     <h1>Home</h1>
     <div v-for="name in matchingNames" :key="name">{{ name }}</div>
-    <button @click="handleClick">stop watching</button>
+    <button @click="handleClick">stop watching</button> -->
+    <h1>home</h1>
+    <PostList :posts="posts" />
   </div>
 </template>
 
 <script>
+import PostList from '../components/postList.vue'
 import { ref, reactive, computed, watch, watchEffect } from 'vue'
 export default {
   name: 'Home',
+  components:{
+    PostList
+  },
   setup() {
     // console.log('setup')
 
@@ -30,29 +36,34 @@ export default {
     //   name.value = 'limsm'
     //   age.value = 55
     // }
-    const search = ref('')
-    const names = ref(['aaa','bbb','ccc','ddd','eee','fff','ggg'])
-    const stopWatch = watch(search , () => {
-      console.log('watch function ran')
-    })
+    // const search = ref('')
+    // const names = ref(['aaa','bbb','ccc','ddd','eee','fff','ggg'])
+    // const stopWatch = watch(search , () => {
+    //   console.log('watch function ran')
+    // })
 
-    const stopWatchEffect = watchEffect(() => {
-      console.log('watchEffect function ran' , search.value)
-    })
-    const matchingNames = computed(()=> {
-      return names.value.filter( name => name.includes( search.value ))
-    })
-    const handleClick = () => {
-      stopWatch()
-      stopWatchEffect()
+    // const stopWatchEffect = watchEffect(() => {
+    //   console.log('watchEffect function ran' , search.value)
+    // })
+    // const matchingNames = computed(()=> {
+    //   return names.value.filter( name => name.includes( search.value ))
+    // })
+    // const handleClick = () => {
+    //   stopWatch()
+    //   stopWatchEffect()
       
-    }
+    // }
+    const posts = ref([
+            { title: 'welcome to the blog' , body: 'Lorem ipsum aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', id: 1 },
+            { title: 'top 5 Css tips' , body: ' Lorem ipsum' , id: 2 },
+        ])
     return {
       // name , age , handleClick , p // key:value
-      names,
-      search,
-      matchingNames,
-      handleClick
+      // names,
+      // search,
+      // matchingNames,
+      // handleClick
+      posts
     }
   }
 }
